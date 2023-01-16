@@ -1,0 +1,98 @@
+@mixin box-shadow {
+    -webkit-box-shadow: 0px 0px 47px 2px rgba(214, 214, 214, 1);
+    -moz-box-shadow: 0px 0px 47px 2px rgba(214, 214, 214, 1);
+    box-shadow: 0px 0px 47px 2px rgba(214, 214, 214, 1);
+  }
+  
+  @mixin box-shadow-colored($color) {
+    -webkit-box-shadow: 0px 3px 0px 0px darken($color, 7%) !important;
+    -moz-box-shadow: 0px 3px 0px 0px darken($color, 7%) !important;
+    box-shadow: 0px 3px 0px 0px darken($color, 7%) !important;
+  }
+  
+  @mixin box-shadow-sm {
+    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.185);
+    -moz-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.185);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.185);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.185);
+  }
+  
+  @mixin border-radius {
+    border-radius: 5px;
+  }
+  @function calculateRem($size) {
+    $remSize: $size / 16px;
+    @return $remSize * 1rem;
+  }
+  
+  @mixin font-size($size) {
+    font-size: $size;
+    font-size: calculateRem($size);
+  }
+  
+  @mixin scale-transition($duration) {
+    -webkit-transition: all $duration ease-in-out;
+    -moz-transition: all $duration ease-in-out;
+    -o-transition: all $duration ease-in-out;
+    transition: all $duration ease-in-out;
+  }
+  
+  @mixin rotate-transform($angle) {
+    -webkit-transform: rotate($angle);
+    -ms-transform: rotate($angle);
+    -moz-transform: rotate($angle);
+  }
+  
+  @mixin scale-transform($number) {
+    -webkit-transform: scale($number, $number);
+    -ms-transform: scale($number, $number);
+    -moz-transform: scale($number, $number);
+  }
+  
+  @mixin scale-transform-x($number) {
+    -webkit-transform: scaleX($number);
+    -ms-transform: scaleX($number);
+    -moz-transform: scaleX($number);
+  }
+  
+  @mixin scale-transform-y($number) {
+    -webkit-transform: scaleY($number);
+    -ms-transform: scaleY($number);
+    -moz-transform: scaleY($number);
+  }
+  
+  @mixin translate-transform-x($number) {
+    -webkit-transform: translateX($number);
+    -ms-transform: translateX($number);
+    -moz-transform: translateX($number);
+  }
+  
+  @mixin translate-transform-y($number) {
+    -webkit-transform: translateY($number);
+    -ms-transform: translateY($number);
+    -moz-transform: translateY($number);
+  }
+  
+  @mixin center($xy: xy) {
+    @if $xy == xy {
+      left: 50%;
+      top: 50%;
+      bottom: auto;
+      right: auto;
+      transform: translateX(-50%) translateY(-50%);
+    } @else if $xy == x {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+    } @else if $xy == y {
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+  }
+  
+  @mixin media-lg {
+  @media screen and (min-width: 1024px) {
+    @content;
+  }
+}
