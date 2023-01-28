@@ -7,12 +7,15 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddArticleModal from "./modal/AddArticleModal";
 import Accordion from "src/components/accordion";
-import { useUpdateRegulationMutation } from "src/api";
+import { useUpdateRegulationMutation, useFetchRegulationArticlesQuery } from "src/api";
 import ReactSelect from "src/components/selectField/ReactSelect";
 import NotificationMessage from "src/components/NotificationMessage";
+import { useSelector } from 'react-redux'
 
 const ViewRegulationForm = () => {
   const location = useLocation();
+  const state = useSelector(state => state.regulation)
+
   const { details } = location.state;
   const [articleModal, setArticalModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -20,10 +23,15 @@ const ViewRegulationForm = () => {
   const [selectedAuthority, setSelectedAuthority] = useState("");
   const [updateMutation, { data, isloading, isSuccess, isError }] =
     useUpdateRegulationMutation();
+  const {data: articleData, isLoading} = useFetchRegulationArticlesQuery(details.id)
   const [message, setMessage] = useState({
     type: "",
     message: "",
   });
+
+
+
+
 
   const [values, setValues] = useState({
     regulation_ref: "",
@@ -84,6 +92,15 @@ const ViewRegulationForm = () => {
     updateMutation({ regulations: regulationsArr });
   };
 
+  var displayArticles = []
+  if(articleData?.data[0]?.articles){
+    displayArticles = articleData?.data[0]?.articles.map(article=>{
+      return(
+        <Accordion article={article} details={details}/>
+      )
+    })
+  }
+
   return (
     <CCol xs={12}>
       <div className="edit-link-container">
@@ -105,7 +122,7 @@ const ViewRegulationForm = () => {
               </div>
               <Row className="view-item-row">
                 <Col className="item-column">
-                  <span className="title">Regulation type</span>
+                  <span className="title">Regulation Reference</span>
                   <span className="value">{details.regulation_ref}</span>
                 </Col>
                 <Col className="item-column">
@@ -348,14 +365,14 @@ const ViewRegulationForm = () => {
             </CButton>
           </div>
           <div>
-            <Accordion />
-            <Accordion />
+            {displayArticles}
           </div>
         </CCardBody>
       </CCard>
       <AddArticleModal
         visible={articleModal}
         close={() => setArticalModal(false)}
+        regulation_id={details.id}
       />
     </CCol>
   );

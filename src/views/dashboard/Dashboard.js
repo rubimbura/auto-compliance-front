@@ -15,9 +15,7 @@ const Dashboard = () => {
   
       <CCard className="mb-4">
         <CCardBody>
-        
         </CCardBody>
-
       </CCard>
     </>
   )

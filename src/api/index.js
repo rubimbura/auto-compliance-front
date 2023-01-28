@@ -16,7 +16,6 @@ const baseQuery = fetchBaseQuery({
     headers.set('Content-Type', 'application/json')
     headers.set('accept', 'application/json')
     headers.set('traceId', `acnsdsdcsdccsdcsdcsd`)
-
     return headers
   },
 })
@@ -59,6 +58,10 @@ useVerifyOtpMutation,
 useFetchRegulationsQuery,
 useAddRegulationMutation,
 useUpdateRegulationMutation,
+useFetchRegulationArticlesQuery,
+useAddRegulationArticleMutation,
+useFetchUsersByArticleIdQuery,
+useSearchUsersQuery,
 
 
 } = appApi

@@ -15,16 +15,15 @@ import {
     const [selectedOwner, setSelectedOwner] = useState('')
     const [selectedCoOwner, setSelectedCoOwner] = useState('')
   
-      const names = [
-          "",
-          {label: 'head of compliance', value: 1},
-          {label: 'head of compliance', value: 1},
-          {label: 'head of compliance', value: 1},
-          {label: 'head of compliance', value: 1},
-          {label: 'Other', value: 'other'}
-      ]
+    const names = [
+        "",
+        {label: 'head of compliance', value: 1},
+        {label: 'head of compliance', value: 1},
+        {label: 'head of compliance', value: 1},
+        {label: 'head of compliance', value: 1},
+        {label: 'Other', value: 'other'}
+    ]
   
-
     const handleSelectedOwner = (e) => {
         setSelectedOwner(e.target.value)
     }  

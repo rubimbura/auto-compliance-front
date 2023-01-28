@@ -1,13 +1,16 @@
-import { CCard, CCardBody, CCol, CInputGroup, CButton } from "@coreui/react";
-import TextField from "src/components/textfield";
+import { CCard, CCardBody, CCol, CButton } from "@coreui/react";
 import DataTable from "src/components/dataTable";
 import { articleHeaders } from "src/components/dataTable/TableHeaders";
 import AssignPeopleModal from "./modal/AssignPeopleModal";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useLocation } from 'react-router-dom'
 
 const ViewRegulationArticle = () => {
   const [showModal, setModal] = useState(false);
+  const location = useLocation()
+  const { article, details: sample} = location.state
+
 
   const data = [
     {
@@ -38,59 +41,47 @@ const ViewRegulationArticle = () => {
     },
   ];
 
-  const details = {
-    title: "compliance",
-  };
 
   const handlePeopleModal = () => {
     setModal(true);
   };
 
+
   return (
     <CCol xs={12}>
       <CCard className="mb-4">
-        <CCardBody style={{ padding: 20 }}>
+        <CCardBody style={{ padding: '20px 30px' }}>
           <>
-            <div className="module-title-container">
-              <span>{details.title} </span>
-            </div>
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Regulation type</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Article Number</span>
+                <span className="value">{article.article_no}</span>
               </Col>
               <Col className="item-column">
-                <span className="title">Issuing authority</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Article Description</span>
+                <span className="value">{article.description || '-'}</span>
               </Col>
             </Row>
 
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Issued date</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Action required</span>
+                <span className="value">{article.action_required}</span>
               </Col>
               <Col className="item-column">
-                <span className="title">Effective date</span>
-                <span className="value">{details.title}</span>
-              </Col>
-            </Row>
-
-            <Row className="view-item-row">
-              <Col className="item-column">
-                <span className="title">Repealed date</span>
-                <span className="value">{details.title}</span>
-              </Col>
-              <Col className="item-column">
-                <span className="title">General Impact</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Impact</span>
+                <span className="value">{article.impact || '-'}</span>
               </Col>
             </Row>
 
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Regulatory Digest</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Self Assessment Frequency</span>
+                <span className="value">{article.nu || '-'}</span>
+              </Col>
+              <Col className="item-column">
+                <span className="title">Action Frequency</span>
+                <span className="value">{article.action_frequency}</span>
               </Col>
             </Row>
           </>
@@ -112,7 +103,7 @@ const ViewRegulationArticle = () => {
               Assign People
             </CButton>
           </div>
-          <DataTable data={data} headers={articleHeaders} />
+          <DataTable data={article?.assigned_to} headers={articleHeaders} />
         </CCardBody>
       </CCard>
       <AssignPeopleModal visible={showModal} close={() => setModal(false)} />

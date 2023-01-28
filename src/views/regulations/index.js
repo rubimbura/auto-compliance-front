@@ -5,6 +5,8 @@ import { RegulationsHeaders } from 'src/components/dataTable/TableHeaders'
 import { useNavigate } from 'react-router-dom'
 import { useFetchRegulationsQuery } from 'src/api'
 import Paginations from 'src/components/pagination'
+import { useDispatch } from 'react-redux'
+import { regulation } from 'src/slices/Regulation'
 
 
 
@@ -14,8 +16,11 @@ const Regulation = () => {
 
  const {data, isLoading} = useFetchRegulationsQuery('regulations')
 
+ const dispatch = useDispatch()
+
   const handleViewItem = (data) => {
     navigate('/regulations/view-regulation', {state: {details: data}})
+    dispatch(regulation(data))
   }
 
   return (

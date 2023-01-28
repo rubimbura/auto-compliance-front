@@ -3,17 +3,18 @@ import {
   CAccordionItem,
   CAccordionHeader,
   CAccordionBody,
-} from "@coreui/react";
+} from "@coreui/react"
+import { Link } from 'react-router-dom'
 
-const Accordion = () => {
+const Accordion = ({article, details}) => {
   return (
     <CAccordion>
       <CAccordionItem itemKey={3}>
-        <CAccordionHeader>Article 1 (Article description)</CAccordionHeader>
+        <CAccordionHeader>{article.description || 'Description not available'}</CAccordionHeader>
         <CAccordionBody>
-            Action Required
+            {article.action_required}
           <div className="accordion-more-link">
-            <a href="/regulations/view-regulation/article">more</a>
+            <Link to={'/regulations/view-regulation/article'} state={{article, details}}>More</Link>
           </div>
         </CAccordionBody>
       </CAccordionItem>
