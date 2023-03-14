@@ -7,13 +7,10 @@ import {
 import {  CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
-
   {
     component: CNavTitle,
     name: '',
   },
-
-  
   {
     component: CNavItem,
     name: 'Dashboard',
@@ -25,11 +22,16 @@ const _nav = [
     component: CNavTitle,
     name: '',
   },
-
   {
     component: CNavItem,
     name: 'Regulations',
     to: '/regulations',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Users',
+    to: '/users',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
 ]

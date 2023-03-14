@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import authEndPoints from './endpoints/auth/Login'
 import regulationEndPoints from './endpoints/regulations'
+import usersEndpoints from './endpoints/users'
 
 
 
@@ -36,11 +37,14 @@ const appApi = createApi({
   reducerPath: 'data',
   baseQuery: baseQueryIntercep,
   tagTypes: [
-    'auth'
+    'auth',
+    'usersPerArticle',
+    'users'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),
-    ...regulationEndPoints(builder)
+    ...regulationEndPoints(builder),
+    ...usersEndpoints(builder),
   }),
 })
 
@@ -61,7 +65,15 @@ useUpdateRegulationMutation,
 useFetchRegulationArticlesQuery,
 useAddRegulationArticleMutation,
 useFetchUsersByArticleIdQuery,
-useSearchUsersQuery,
+useSearchUsersMutation,
+useFetchUsersPerArticleQuery,
+useCreateUserPerArticleMutation,
+useDeleteUserPerArticleMutation,
+
+
+//users
+useFetchUsersQuery,
+useCreateUserMutation,
 
 
 } = appApi

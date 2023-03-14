@@ -36,8 +36,29 @@ const regulationEndPoints = (builder) =>
     providesTags: 'assignedUsers'
   }),
 
-  searchUsers: builder.query({
+  searchUsers: builder.mutation({
     query: (searchQuery) => `${baseUrl}/users?p=0&r=50&sv=${searchQuery}`
+  }),
+  fetchUsersPerArticle: builder.query({
+    query:(id) => `${baseUrl}/users/articles/${id}?p=0&r=50`,
+    providesTags: ['usersPerArticle']
+  }),
+  createUserPerArticle: builder.mutation({
+    query: (body) => ({
+      url: `${baseUrl}/article/add-user`,
+      method: 'post',
+      body
+    }),
+    invalidatesTags: ['usersPerArticle']
+  }),
+
+  deleteUserPerArticle: builder.mutation({
+    query: (body) => ({
+      url: `${baseUrl}/article/remove-user`,
+      method: 'post',
+      body
+    }),
+    invalidatesTags: ['usersPerArticle']
   })
 
 })

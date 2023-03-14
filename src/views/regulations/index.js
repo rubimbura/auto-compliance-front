@@ -1,5 +1,5 @@
 import React from 'react'
-import { CCard, CCardBody,  CCol, CButton } from '@coreui/react'
+import { CCard, CCardBody,  CCol } from '@coreui/react'
 import DataTable from 'src/components/dataTable'
 import { RegulationsHeaders } from 'src/components/dataTable/TableHeaders'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { useFetchRegulationsQuery } from 'src/api'
 import Paginations from 'src/components/pagination'
 import { useDispatch } from 'react-redux'
 import { regulation } from 'src/slices/Regulation'
+import PageHeaderContainer from 'src/components/pageHeader'
 
 
 
@@ -23,34 +24,20 @@ const Regulation = () => {
     dispatch(regulation(data))
   }
 
+  const handleAddButton = () => {
+    navigate('/regulations/new-regulation')
+ }
+
   return (
     <CCol xs={12}>
-      <div>
-        <CButton
-          style={{
-            backgroundColor: '#ECAA00',
-            outline: 'none',
-            border: 'none',
-            color: 'black',
-            fontWeight: 'bold',
-            display: 'flex',
-            marginLeft: 'auto',
-            marginBottom: 20,
-          }}
-          onClick={()=> navigate('/regulations/new-regulation')}
-        >
-          Add a new regulation
-        </CButton>
-      </div>
+      <PageHeaderContainer buttonTitle="Add a new Regulation" handleAddButton={handleAddButton}/>
       <CCard className="mb-4">
-        {/* <CCardHeader>
-          <SearchEntity/>
-        </CCardHeader> */}
         <CCardBody>
           <DataTable
             headers={RegulationsHeaders}
             data={data?.data[0]?.regulations}
             handleViewItem={handleViewItem}
+            isLoading={isLoading}
           />
         </CCardBody>
       </CCard>

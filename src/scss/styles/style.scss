@@ -791,28 +791,4 @@ body::-webkit-scrollbar-thumb {
 
 
 @import 'onboarding.styles.scss';
-@import 'thomas.styles.scss';
-@import 'components/common/pagination/index';
-@import 'components/common/dataTable/index';
-@import 'components/common/cards/index';
-@import 'components/common/toolTip/index';
-@import 'components/common/stepsHandler/index';
-@import 'components/common/uploadFile/index';
-@import 'components/common/progressBar/index';
-@import 'components/common/accountBalanceShowHide/index';
-@import 'components/common/radioButton/index';
-@import 'components/common/dataSummary/index';
-@import 'components/common/tableInitials/index';
-@import 'components/common/backBtn/index';
-@import 'components/common/editableTable/index';
-@import 'components/common/notificationMessagePanel/index';
 
-@import 'pages/beneficiaries/_index.scss';
-@import 'pages/payments/index';
-@import 'pages/auth/login/index';
-@import 'pages/beneficiaries/modal/_index.scss';
-@import 'pages/bulk/bulkData/_index.scss';
-
-@import 'pages/beneficiaries/_index.scss';
-@import '../pages/auth/login/index';
-@import '../pages/profile/_index';

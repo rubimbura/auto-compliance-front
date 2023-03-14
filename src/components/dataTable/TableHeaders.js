@@ -34,30 +34,62 @@ export const RegulationsHeaders = [
 export const articleHeaders = [
   {
     label: 'Assigned people',
-    value: 'user_id',
+    value: 'last_name',
   },
   {
     label: 'Assigned Date',
-    value: 'id'
+    value: 'input_date'
   },
   {
     label: 'Compliance status',
-    value:'id'
+    value:'status'
   },
   {
     label: 'Gap',
-    value:'id'
+    value:'email'
   },
   {
     label: 'Action Plan',
-    value: 'id',
+    value: 'phone_number',
   },
   {
     label: 'Deadline',
-    value: 'id',
+    value: 'branch',
   },
   {
     label: 'Actions',
-    value: 'id',
+    value: 'actions',
+  },
+]
+
+
+export const usersHeaders = [
+  {
+    label: 'First Name',
+    value: 'first_name'
+  },
+  {
+    label: 'Last Name',
+    value: 'last_name'
+  },
+  {
+    label: 'Email',
+    value: 'email'
+  },
+  {
+    label: 'Phone Number',
+    value: 'phone_number'
+  },
+  {
+    label: 'Status',
+    value: 'status'
+  },
+  {
+    label: 'Role',
+    value: 'user_role'
+  },
+  {
+    label: 'Actions',
+    value: 'actions',
   },
 ]

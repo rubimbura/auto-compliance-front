@@ -7,11 +7,10 @@ import {
 } from "@coreui/react";
 import close_icon from "../../../assets/images/close-icon.svg";
 import close_icon_black from "../../../assets/images/close-icon-black.jpeg";
-
 import TextField from "src/components/textfield";
 import SelectField from "src/components/selectField";
 import { useState, useEffect } from "react";
-import { useAddRegulationArticleMutation, useSearchUsersQuery } from "src/api";
+import { useAddRegulationArticleMutation, useSearchUsersMutation } from "src/api";
 import "./SearchBar.scss";
 import NotificationMessage from "src/components/NotificationMessage";
 
@@ -35,23 +34,22 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
   })
 
   const [addArticleMutation, { data, isLoading, isSuccess, isError, error }] =
-    useAddRegulationArticleMutation();
+    useAddRegulationArticleMutation()
 
-  const [skip, setSkip] = useState(true)
 
-  const { data: searchedUsers } = useSearchUsersQuery(searchTerm, {skip});
+  const [searchMutation, { data: searchedUsers }] = useSearchUsersMutation();
 
 
   const handleAddArticle = () => {
     const newIds = searchResults.map(el => {
       return {user_id: el.id}
     })
-    let test = {
+    let payload = {
       ...values,
       assigned_to: newIds
     }
     var articles = [];
-    articles.push(test);
+    articles.push(payload);
 
     let sample = {
       articles: articles,
@@ -96,8 +94,8 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
 
 
   const handleSearchUser = (event) => {
+    searchMutation(event.target.value)
     setSearchTerm(event.target.value)
-    setSkip(prev => !prev)
   }
 
 
@@ -266,5 +264,5 @@ const assessmentFrequency = [
   { label: "Monthly", value: 1 },
   { label: "Quartely", value: 1 },
   { label: "Anual", value: 1 },
-  { label: "Other show date field", value: 1 },
+  // { label: "Other show date field", value: 1 },
 ];

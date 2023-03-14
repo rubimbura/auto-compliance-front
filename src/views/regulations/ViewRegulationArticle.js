@@ -4,53 +4,47 @@ import { articleHeaders } from "src/components/dataTable/TableHeaders";
 import AssignPeopleModal from "./modal/AssignPeopleModal";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
-import { useLocation } from 'react-router-dom'
+import { useLocation } from "react-router-dom";
+import {
+  useFetchUsersPerArticleQuery,
+  useDeleteUserPerArticleMutation,
+} from "src/api";
+import ViewAssignedPeopleModal from "./modal/ViewAsignedPeopleModal";
 
 const ViewRegulationArticle = () => {
   const [showModal, setModal] = useState(false);
-  const location = useLocation()
-  const { article, details: sample} = location.state
+  const location = useLocation();
+  const { article } = location.state;
 
+  const { data: usersList } = useFetchUsersPerArticleQuery(article.id);
+  const [personDetails, setPersonDetails] = useState("");
+  const [showPerson, setPersonModal] = useState(false);
 
-  const data = [
-    {
-      title: "Head of Compliance",
-      type: "Directive",
-      date: "12-02-2",
-      issuedAuthority: "BNR",
-      actions: "none",
-      status: "Active",
-      complied: "Yes",
-    },
-    {
-      title: "Head of ICT",
-      status: "Inactive",
-      type: "Regulation",
-      date: "12-02-2",
-      issuedAuthority: "BNR",
-      actions: "none",
-      complied: "Yes",
-    },
-    {
-      title: "Head of Business",
-      status: "Active",
-      type: "Law",
-      date: "12-02-2",
-      complied: "No",
-      issuedAuthority: "BNR",
-    },
-  ];
-
+  const [deleteMutation, {}] = useDeleteUserPerArticleMutation();
 
   const handlePeopleModal = () => {
     setModal(true);
   };
 
+  const handleViewItem = (user) => {
+    setPersonDetails(user);
+    setPersonModal(true);
+  };
+
+  const handleDeleteItem = (data) => {
+    let payload = {
+      articleUsers:[{
+        user_id:data.id ,
+        article_id: article.id,
+      }]
+    }
+    deleteMutation(payload)
+  }
 
   return (
     <CCol xs={12}>
       <CCard className="mb-4">
-        <CCardBody style={{ padding: '20px 30px' }}>
+        <CCardBody style={{ padding: "20px 30px" }}>
           <>
             <Row className="view-item-row">
               <Col className="item-column">
@@ -59,7 +53,7 @@ const ViewRegulationArticle = () => {
               </Col>
               <Col className="item-column">
                 <span className="title">Article Description</span>
-                <span className="value">{article.description || '-'}</span>
+                <span className="value">{article.description || "-"}</span>
               </Col>
             </Row>
 
@@ -70,14 +64,14 @@ const ViewRegulationArticle = () => {
               </Col>
               <Col className="item-column">
                 <span className="title">Impact</span>
-                <span className="value">{article.impact || '-'}</span>
+                <span className="value">{article.impact || "-"}</span>
               </Col>
             </Row>
 
             <Row className="view-item-row">
               <Col className="item-column">
                 <span className="title">Self Assessment Frequency</span>
-                <span className="value">{article.nu || '-'}</span>
+                <span className="value">{article.nu || "-"}</span>
               </Col>
               <Col className="item-column">
                 <span className="title">Action Frequency</span>
@@ -103,10 +97,27 @@ const ViewRegulationArticle = () => {
               Assign People
             </CButton>
           </div>
-          <DataTable data={article?.assigned_to} headers={articleHeaders} />
+          <DataTable
+            hasDeleteBtn={true}
+            data={usersList?.data[0]?.users}
+            headers={articleHeaders}
+            handleViewItem={handleViewItem}
+            handleDeleteItem={handleDeleteItem}
+          />
         </CCardBody>
       </CCard>
-      <AssignPeopleModal visible={showModal} close={() => setModal(false)} />
+      <AssignPeopleModal
+        visible={showModal}
+        close={() => setModal(false)}
+        article={article}
+      />
+      <ViewAssignedPeopleModal
+        visible={showPerson}
+        close={() => {
+          setPersonModal(false);
+        }}
+        data={personDetails}
+      />
     </CCol>
   );
 };
