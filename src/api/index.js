@@ -4,6 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import authEndPoints from './endpoints/auth/Login'
 import regulationEndPoints from './endpoints/regulations'
 import usersEndpoints from './endpoints/users'
+import userRegulationEndPoints from './endpoints/userRegulations'
 
 
 
@@ -45,6 +46,7 @@ const appApi = createApi({
     ...authEndPoints(builder),
     ...regulationEndPoints(builder),
     ...usersEndpoints(builder),
+    ...userRegulationEndPoints(builder)
   }),
 })
 
@@ -69,6 +71,10 @@ useSearchUsersMutation,
 useFetchUsersPerArticleQuery,
 useCreateUserPerArticleMutation,
 useDeleteUserPerArticleMutation,
+
+
+//user regulations
+useSelfEvaluationMutation,
 
 
 //users

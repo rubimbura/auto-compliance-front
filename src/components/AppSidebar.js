@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import jwtDecode from 'jwt-decode'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
 
@@ -18,7 +19,7 @@ const AppSidebar = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   const token = sessionStorage.getItem('token') 
-
+  const decode = token ?  jwtDecode(token) : ''
   return (
     <CSidebar
       position="fixed"
@@ -30,7 +31,7 @@ const AppSidebar = () => {
     >
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={true ? userNaviagtion : navigation} />
+          <AppSidebarNav items={decode.role === 'SYS_ADMIN' ? navigation : userNaviagtion} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
