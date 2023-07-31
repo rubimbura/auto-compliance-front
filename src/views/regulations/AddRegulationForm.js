@@ -141,8 +141,27 @@ const AddRegulationForm = () => {
           </div>
 
           {selectedType === 'other' || selectedAuthority === 'other' ? <div  className="add-form-row" style={{backgroundColor:'#F5F8FB', padding: 20}}>
-            {selectedType === 'other' && <TextField label="Enter other type" style={{width: '50%'}}/> }
-            {selectedAuthority === 'other' && <TextField className="ml-2 form-field" label="Enter Issuing authority" style={{width: '49.2%', display: 'flex', marginLeft: 'auto'}}/>}
+            {selectedType === 'other' && 
+            <TextField 
+              label="Enter other type" 
+              style={{width: '50%'}}
+              onChange={(text)=> setValues({
+                ...values,
+                type: text.target.value
+              })}
+              /> }
+            {selectedAuthority === 'other' && 
+            <TextField 
+              className="ml-2 form-field" 
+              label="Enter Issuing authority" 
+              style={{width: '49.2%', display: 'flex', marginLeft: 'auto'}}
+              onChange={(text) => {
+                setValues({
+                  ...values,
+                  issuing_authority: text.target.value
+                })
+              }}
+              />}
           </div>: null}
 
           <div  className="add-form-row">

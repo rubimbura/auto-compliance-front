@@ -3,6 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import authEndPoints from './endpoints/auth/Login'
 import regulationEndPoints from './endpoints/regulations'
+import usersEndpoints from './endpoints/users'
+import userRegulationEndPoints from './endpoints/userRegulations'
 
 
 
@@ -16,7 +18,6 @@ const baseQuery = fetchBaseQuery({
     headers.set('Content-Type', 'application/json')
     headers.set('accept', 'application/json')
     headers.set('traceId', `acnsdsdcsdccsdcsdcsd`)
-
     return headers
   },
 })
@@ -37,11 +38,15 @@ const appApi = createApi({
   reducerPath: 'data',
   baseQuery: baseQueryIntercep,
   tagTypes: [
-    'auth'
+    'auth',
+    'usersPerArticle',
+    'users'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),
-    ...regulationEndPoints(builder)
+    ...regulationEndPoints(builder),
+    ...usersEndpoints(builder),
+    ...userRegulationEndPoints(builder)
   }),
 })
 
@@ -59,6 +64,22 @@ useVerifyOtpMutation,
 useFetchRegulationsQuery,
 useAddRegulationMutation,
 useUpdateRegulationMutation,
+useFetchRegulationArticlesQuery,
+useAddRegulationArticleMutation,
+useFetchUsersByArticleIdQuery,
+useSearchUsersMutation,
+useFetchUsersPerArticleQuery,
+useCreateUserPerArticleMutation,
+useDeleteUserPerArticleMutation,
+
+
+//user regulations
+useSelfEvaluationMutation,
+
+
+//users
+useFetchUsersQuery,
+useCreateUserMutation,
 
 
 } = appApi

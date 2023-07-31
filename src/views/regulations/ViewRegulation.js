@@ -1,18 +1,21 @@
-import { CCard, CCardBody, CCol, CButton } from "@coreui/react";
+import { CCard, CCardBody, CCol, CButton,CHeaderDivider } from "@coreui/react";
 import { Row, Col } from "react-bootstrap";
 import TextField from "src/components/textfield";
-import SelectField from "src/components/selectField";
 import TextArea from "src/components/textArea";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddArticleModal from "./modal/AddArticleModal";
 import Accordion from "src/components/accordion";
-import { useUpdateRegulationMutation } from "src/api";
+import { useUpdateRegulationMutation, useFetchRegulationArticlesQuery } from "src/api";
 import ReactSelect from "src/components/selectField/ReactSelect";
 import NotificationMessage from "src/components/NotificationMessage";
 
+
+
 const ViewRegulationForm = () => {
   const location = useLocation();
+
+
   const { details } = location.state;
   const [articleModal, setArticalModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -20,6 +23,7 @@ const ViewRegulationForm = () => {
   const [selectedAuthority, setSelectedAuthority] = useState("");
   const [updateMutation, { data, isloading, isSuccess, isError }] =
     useUpdateRegulationMutation();
+  const {data: articleData, isLoading} = useFetchRegulationArticlesQuery(details.id)
   const [message, setMessage] = useState({
     type: "",
     message: "",
@@ -53,21 +57,31 @@ const ViewRegulationForm = () => {
         message: ''
       })
     }
-    const interval = setInterval(() => {
-      setMessage({
-        type: '',
-        message: ''
-      })
-    }, 10000)
-    return () => clearInterval(interval)
+    if(isSuccess | isError){
+      const interval = setInterval(() => {
+        setMessage({
+          type: '',
+          message: ''
+        })
+      }, 10000)
+      return () => clearInterval(interval)
+    }
   }, [isSuccess, isError])
 
   const handleTypeChange = (e) => {
-    setSelectedType(e.target.value);
+    setSelectedType(e.label);
+    setValues({
+      ...values,
+      type: e.label
+    })
   };
 
   const handleAuthorityChange = (e) => {
-    setSelectedAuthority(e.target.value);
+    setSelectedAuthority(e.label);
+    setValues({
+      ...values,
+      issuing_authority: e.label
+    })
   };
 
   const handleArticalModal = () => {
@@ -84,7 +98,18 @@ const ViewRegulationForm = () => {
     updateMutation({ regulations: regulationsArr });
   };
 
+  var displayArticles = []
+  if(articleData?.data[0]?.articles){
+    displayArticles = articleData?.data[0]?.articles.map(article=>{
+      return(
+        <Accordion article={article} details={details}/>
+      )
+    })
+  }
+
   return (
+    <>
+    <CHeaderDivider /> 
     <CCol xs={12}>
       <div className="edit-link-container">
         <span onClick={handleEditMode}>{editMode ? "View Mode" : "Edit"}</span>
@@ -98,14 +123,10 @@ const ViewRegulationForm = () => {
             <>
               <div className="module-title-container">
                 <span>{details.title} </span>
-                {/* <div className="status-container">
-                  <div className="icon"></div>
-                  <span>Edit</span>
-                </div> */}
               </div>
               <Row className="view-item-row">
                 <Col className="item-column">
-                  <span className="title">Regulation type</span>
+                  <span className="title">Regulation Reference</span>
                   <span className="value">{details.regulation_ref}</span>
                 </Col>
                 <Col className="item-column">
@@ -149,23 +170,6 @@ const ViewRegulationForm = () => {
             </>
           ) : (
             <>
-              {/* <div className="add-form-row">
-                <TextField
-                  label="Regulation Title"
-                  value={values.regulation_ref}
-                  onChange={(text) => {
-                    setValues({
-                      ...values,
-                      regulation_ref: text.target.value
-                    })
-                  }}
-                />
-                <SelectField
-                  label="Status"
-                  style={{ marginLeft: 10 }}
-                  options={status}
-                />
-              </div> */}
               <div
                 style={{ width: "100%", display: "flex", alignItems: "center" }}
               >
@@ -197,32 +201,43 @@ const ViewRegulationForm = () => {
                 </div>
               </div>
               <div className="add-form-row">
-                <SelectField
-                  label="Select Type"
-                  options={options}
-                  onChange={handleTypeChange}
-                />
-                <SelectField
-                  label="Issuing Authority"
-                  style={{ marginLeft: 10 }}
-                  options={issuedAuthorityArr}
-                  onChange={handleAuthorityChange}
-                  value="any v alue"
-                />
+                <div style={{width: '50%'}}>
+                  <ReactSelect
+                    label="Select Type"
+                    options={options}
+                    onChange={handleTypeChange}
+                    value={{label:values.type , value: '123'}}
+                  />
+                </div>
+                <div style={{width: '50%'}}>
+                  <ReactSelect
+                    label="Issuing Authority"
+                    style={{ marginLeft: 10 }}
+                    options={issuedAuthorityArr}
+                    onChange={handleAuthorityChange}
+                    value={{label: values.issuing_authority, value: '123'}}
+                  />
+                </div>
               </div>
 
-              {selectedType === "other" || selectedAuthority === "other" ? (
+              {selectedType?.toLocaleLowerCase() === "other" || selectedAuthority?.toLocaleLowerCase() === "other" ? (
                 <div
                   className="add-form-row"
                   style={{ backgroundColor: "#F5F8FB", padding: 20 }}
                 >
-                  {selectedType === "other" && (
+                  {selectedType?.toLocaleLowerCase() === "other" && (
                     <TextField
                       label="Enter other type"
                       style={{ width: "50%" }}
+                      onChange={(e) => {
+                        setValues({
+                          ...values,
+                          type: e.target.value
+                        })
+                      } }
                     />
                   )}
-                  {selectedAuthority === "other" && (
+                  {selectedAuthority?.toLocaleLowerCase() === "other" && (
                     <TextField
                       className="ml-2 form-field"
                       label="Enter Issuing authority"
@@ -230,6 +245,12 @@ const ViewRegulationForm = () => {
                         width: "49.2%",
                         display: "flex",
                         marginLeft: "auto",
+                      }}
+                      onChange={(e) => {
+                        setValues({
+                          ...values,
+                          issuing_authority: e.target.value
+                        })
                       }}
                     />
                   )}
@@ -348,23 +369,23 @@ const ViewRegulationForm = () => {
             </CButton>
           </div>
           <div>
-            <Accordion />
-            <Accordion />
+            {displayArticles}
           </div>
         </CCardBody>
       </CCard>
       <AddArticleModal
         visible={articleModal}
         close={() => setArticalModal(false)}
+        regulation_id={details.id}
       />
     </CCol>
+    </>
   );
 };
 
 export default ViewRegulationForm;
 
 const options = [
-  "",
   { label: "Directive", value: "some" },
   { label: "Regulation", value: "2" },
   { label: "Law", value: "3" },
@@ -373,7 +394,6 @@ const options = [
 ];
 
 const issuedAuthorityArr = [
-  "",
   { label: "BNR", value: "bnr" },
   { label: "Ministerial Order", value: "minesterial order" },
   { label: "Rwanda Revenue Authority", value: "rra" },

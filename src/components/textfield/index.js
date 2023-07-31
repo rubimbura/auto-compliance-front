@@ -19,6 +19,7 @@ const TextField = (props) => {
         value={props.value}
         onChange={props.onChange}
         className="form-input-textfield"
+        placeholder={props.placeholder}
       />
     </CInputGroup>
   );

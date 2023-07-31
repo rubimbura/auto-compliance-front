@@ -29,6 +29,7 @@ const customStyles = {
       border: state.isFocused ? '' : '1px solid #E6E8EF',
       borderRadius: '8px',
       margin: '0px 0px 20px 0px',
-      padding: '0px 8px'
+      padding: '0px 8px',
+      color: 'red !important'
     }),
   }

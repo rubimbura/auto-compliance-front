@@ -1,96 +1,81 @@
-import { CCard, CCardBody, CCol, CInputGroup, CButton } from "@coreui/react";
-import TextField from "src/components/textfield";
+import { CCard, CCardBody, CCol, CButton } from "@coreui/react";
 import DataTable from "src/components/dataTable";
 import { articleHeaders } from "src/components/dataTable/TableHeaders";
 import AssignPeopleModal from "./modal/AssignPeopleModal";
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import {
+  useFetchUsersPerArticleQuery,
+  useDeleteUserPerArticleMutation,
+} from "src/api";
+import ViewAssignedPeopleModal from "./modal/ViewAsignedPeopleModal";
 
 const ViewRegulationArticle = () => {
   const [showModal, setModal] = useState(false);
+  const location = useLocation();
+  const { article } = location.state;
 
-  const data = [
-    {
-      title: "Head of Compliance",
-      type: "Directive",
-      date: "12-02-2",
-      issuedAuthority: "BNR",
-      actions: "none",
-      status: "Active",
-      complied: "Yes",
-    },
-    {
-      title: "Head of ICT",
-      status: "Inactive",
-      type: "Regulation",
-      date: "12-02-2",
-      issuedAuthority: "BNR",
-      actions: "none",
-      complied: "Yes",
-    },
-    {
-      title: "Head of Business",
-      status: "Active",
-      type: "Law",
-      date: "12-02-2",
-      complied: "No",
-      issuedAuthority: "BNR",
-    },
-  ];
+  const { data: usersList } = useFetchUsersPerArticleQuery(article.id);
+  const [personDetails, setPersonDetails] = useState("");
+  const [showPerson, setPersonModal] = useState(false);
 
-  const details = {
-    title: "compliance",
-  };
+  const [deleteMutation, {}] = useDeleteUserPerArticleMutation();
 
   const handlePeopleModal = () => {
     setModal(true);
   };
 
+  const handleViewItem = (user) => {
+    setPersonDetails(user);
+    setPersonModal(true);
+  };
+
+  const handleDeleteItem = (data) => {
+    let payload = {
+      articleUsers:[{
+        user_id:data.id ,
+        article_id: article.id,
+      }]
+    }
+    deleteMutation(payload)
+  }
+
   return (
     <CCol xs={12}>
       <CCard className="mb-4">
-        <CCardBody style={{ padding: 20 }}>
+        <CCardBody style={{ padding: "20px 30px" }}>
           <>
-            <div className="module-title-container">
-              <span>{details.title} </span>
-            </div>
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Regulation type</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Article Number</span>
+                <span className="value">{article.article_no}</span>
               </Col>
               <Col className="item-column">
-                <span className="title">Issuing authority</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Article Description</span>
+                <span className="value">{article.description || "-"}</span>
               </Col>
             </Row>
 
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Issued date</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Action required</span>
+                <span className="value">{article.action_required}</span>
               </Col>
               <Col className="item-column">
-                <span className="title">Effective date</span>
-                <span className="value">{details.title}</span>
-              </Col>
-            </Row>
-
-            <Row className="view-item-row">
-              <Col className="item-column">
-                <span className="title">Repealed date</span>
-                <span className="value">{details.title}</span>
-              </Col>
-              <Col className="item-column">
-                <span className="title">General Impact</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Impact</span>
+                <span className="value">{article.impact || "-"}</span>
               </Col>
             </Row>
 
             <Row className="view-item-row">
               <Col className="item-column">
-                <span className="title">Regulatory Digest</span>
-                <span className="value">{details.title}</span>
+                <span className="title">Self Assessment Frequency</span>
+                <span className="value">{article.nu || "-"}</span>
+              </Col>
+              <Col className="item-column">
+                <span className="title">Action Frequency</span>
+                <span className="value">{article.action_frequency}</span>
               </Col>
             </Row>
           </>
@@ -112,10 +97,27 @@ const ViewRegulationArticle = () => {
               Assign People
             </CButton>
           </div>
-          <DataTable data={data} headers={articleHeaders} />
+          <DataTable
+            hasDeleteBtn={true}
+            data={usersList?.data[0]?.users}
+            headers={articleHeaders}
+            handleViewItem={handleViewItem}
+            handleDeleteItem={handleDeleteItem}
+          />
         </CCardBody>
       </CCard>
-      <AssignPeopleModal visible={showModal} close={() => setModal(false)} />
+      <AssignPeopleModal
+        visible={showModal}
+        close={() => setModal(false)}
+        article={article}
+      />
+      <ViewAssignedPeopleModal
+        visible={showPerson}
+        close={() => {
+          setPersonModal(false);
+        }}
+        data={personDetails}
+      />
     </CCol>
   );
 };
