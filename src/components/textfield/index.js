@@ -4,8 +4,6 @@ import {
 } from "@coreui/react";
 
 
-
-
 const TextField = (props) => {
   return (
     <CInputGroup className={`mb-4 ${props.className}`} style={{display: 'flex', flexDirection: 'column', ...props.style}}>
@@ -18,9 +16,10 @@ const TextField = (props) => {
         disabled={props.disabled}
         value={props.value}
         onChange={props.onChange}
-        className="form-input-textfield"
+        className={`form-input-textfield ${props.error ? "is-invalid" : ""}`}
         placeholder={props.placeholder}
       />
+      {props.error && <div className="invalid-feedback">{props.errorText}</div>}
     </CInputGroup>
   );
 };

@@ -24,6 +24,10 @@ const [userDetails, setUserDetails] = useState('')
     setUserDetails(data)
   }
 
+  const handleDeleteItem = () => {
+    
+  }
+
  return(
     <CCol sx={12}>
       <PageHeaderContainer buttonTitle="Add A user" handleAddButton={handleModal}/>
@@ -34,6 +38,7 @@ const [userDetails, setUserDetails] = useState('')
             data={data?.data[0]?.users}
             handleViewItem={handleViewItem}
             isLoading={isLoading}
+            handleDeleteItem={handleDeleteItem}
           />
         </CCardBody>
         </CCard>

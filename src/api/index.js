@@ -5,7 +5,7 @@ import authEndPoints from './endpoints/auth/Login'
 import regulationEndPoints from './endpoints/regulations'
 import usersEndpoints from './endpoints/users'
 import userRegulationEndPoints from './endpoints/userRegulations'
-
+import settingsEndPoints from './endpoints/settings'
 
 
 const baseQuery = fetchBaseQuery({
@@ -40,13 +40,15 @@ const appApi = createApi({
   tagTypes: [
     'auth',
     'usersPerArticle',
-    'users'
+    'users',
+    'permissions'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),
     ...regulationEndPoints(builder),
     ...usersEndpoints(builder),
-    ...userRegulationEndPoints(builder)
+    ...userRegulationEndPoints(builder),
+    ...settingsEndPoints(builder)
   }),
 })
 
@@ -80,6 +82,12 @@ useSelfEvaluationMutation,
 //users
 useFetchUsersQuery,
 useCreateUserMutation,
+
+
+//settings
+useCreatePermissionMutation,
+useCreateRoleMutation,
+useFetchPermissionsQuery,
 
 
 } = appApi

@@ -1,0 +1,73 @@
+.create-role-permision-container{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    .item-container{
+      padding: 20px;
+      border: 1px solid #E6E8EF;
+      border-radius: 8px;
+
+    }
+
+    .first-row{
+        width: 50%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-start;
+        .select-item-container{
+            padding: 10px 30px;
+            border: 1px solid #E6E8EF;
+            border-radius: 20px;
+            background-color: #E6E8EF;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.3s ease;
+            gap: 20px;
+            min-width: 40%;
+            span{
+                font-weight: bold;
+            }
+        }
+        .select-item-container:hover{
+          background-color: #838AA2;
+        }
+    }
+    .second-row{
+        width: 50%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        background-color: #F0F3F7;
+        align-items: flex-start;
+        .select-item-container-active{
+            padding: 10px 30px;
+            border: 1px solid #0061CC;
+            border-radius: 20px;
+            background-color: #0061CC;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            min-width: 40%;
+            cursor: pointer;
+            span{
+                font-weight: bold;
+                color: white;
+            }
+        }
+        .select-item-container-active:hover{
+            background-color: #045ab6;
+        }
+    }
+}
+
+.assign-permission-container{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    .assign-text{
+      font-size: 16px;
+      color: #212529;
+    }
+}

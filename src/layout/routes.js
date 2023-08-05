@@ -7,6 +7,8 @@ const AddRegulationForm = React.lazy(()=>import('../views/regulations/AddRegulat
 const ViewRegulationForm = React.lazy(() => import('../views/regulations/ViewRegulation'))
 const ViewRegulationArticle = React.lazy(() => import('../views/regulations/ViewRegulationArticle'))
 const Users = React.lazy(() => import('../views/users'))
+const RolesSettings = React.lazy(() => import('../views/settings/roles'))
+const PermissionSettings = React.lazy(() => import('../views/settings/permisions'))
 
 // user regulations
 const UserRegulation = React.lazy(() => import('../views/regulations/user/UserRegulation'))
@@ -20,7 +22,11 @@ const routes = [
   { path: '/regulations/view-regulation/article', name: 'Article', element: ViewRegulationArticle},
   { path: '/user/regulations', name: 'Regulation', element: UserRegulation},
   { path: '/user/regulations/assesment', name: 'Regulation', element: AssesUserRegulation},
-  { path: '/users', name: 'Users', element: Users}
+  { path: '/users', name: 'Users', element: Users},
+  { path: '/Roles', name: 'Roles', element: RolesSettings},
+  { path: '/Permissions', name: 'Permissions', element: PermissionSettings}
+
+
 ]
 
 export default routes

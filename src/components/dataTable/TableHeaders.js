@@ -93,3 +93,10 @@ export const usersHeaders = [
     value: 'actions',
   },
 ]
+
+export const permissionsHeaders = [
+  {
+    label: 'AVAILABLE PERMISSIONS',
+    value: 'name'
+  }
+]

@@ -14,7 +14,11 @@ const TextArea = (props) => {
         label={props.label}
         onChange={props.onChange}
         value={props.value}
-      ></CFormTextarea>
+        className={`${props.error ? "is-invalid" : ""}`}
+      >
+
+      </CFormTextarea>
+      {props.error && <div className="invalid-feedback">{props.errorText}</div>}
     </CInputGroup>
   );
 };
