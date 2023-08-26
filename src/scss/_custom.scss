@@ -206,3 +206,9 @@ color: #D04750;
         }
     }
 }
+
+.card {
+    border-color: #F0F3F7 !important;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.05);
+    z-index: 1;
+}
