@@ -1,3 +1,6 @@
+@import './styles/layouts/_fonts.scss';
+
+
 .login-container{
     background-image:linear-gradient(to top, rgba(245, 246, 252, 0.52), rgba(0,50,100)), url(../assets/images/bnr-bg-1.jpeg);
     background-repeat: no-repeat;
@@ -211,4 +214,39 @@ color: #D04750;
     border-color: #F0F3F7 !important;
     box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.05);
     z-index: 1;
+}
+
+.table-headers-text{
+  color: #034EA2 !important;
+  font-family: $sofia-regular;
+  letter-spacing: 0.6px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.table-body-text{
+  color: #2A2F4E !important;
+  font-family: $sofia-regular;
+  font-size: 14px;
+  font-weight: 400px;
+  line-height: 16px;
+}
+
+.table-row-item{
+    border-bottom: 1px solid #e9ecef;
+}
+
+.pagination-text{
+  color: #2A2F4E !important;
+  font-family: $sofia-regular;
+  font-size: 14px;
+  font-weight: 400px;
+  line-height: 16px;
+}
+
+.add-button-container{
+    outline: none;
+    border: none;
+    background-color: #034EA2 !important;
+    font-family: $sofia-regular !important;
 }

@@ -21,7 +21,7 @@ const DataTable = ({
   if (headers?.length > 0) {
     displayHeaders = headers.map((el) => {
       return (
-        <th>
+        <th className="table-headers-text">
           <div className="d-flex">
             <div>{el.label || "-"}</div>
             <div className="table-sort-container ml-2">
@@ -56,10 +56,10 @@ const DataTable = ({
         </div>
       );
       return (
-        <tr>
+        <tr className="table-row-item">
           {headers.map((el) => {
             return (
-              <td className={newObj[el.value]}> {newObj[el.value] || "-"}</td>
+              <td className={`table-body-text ${newObj[el.value]}`}> {newObj[el.value] || "-"}</td>
             );
           })}
         </tr>
@@ -68,7 +68,7 @@ const DataTable = ({
   }
 
   return (
-    <Table hover>
+    <Table hover striped>
       <thead>
         <tr>{displayHeaders}</tr>
       </thead>

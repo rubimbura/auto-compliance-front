@@ -4,7 +4,7 @@ import "./index.scss";
 const PageHeaderContainer = ({hasDasborad, handleAddButton, buttonTitle}) => {
   return (
     <div className="page-header-container">
-      {hasDasborad && <div className="statistics-container">
+      {true && <div className="statistics-container">
         <div className="card-container total">
           <span className="title">Total Regulations:</span>
           <span className="value">30</span>
@@ -23,16 +23,10 @@ const PageHeaderContainer = ({hasDasborad, handleAddButton, buttonTitle}) => {
         </div>
       </div>}
       <CButton
-        style={{
-          backgroundColor: "#ECAA00",
-          outline: "none",
-          border: "none",
-          color: "black",
-          fontWeight: "bold",
-          marginLeft: 'auto'
-        }}
+        style={{}}
         // onClick={() => navigate("/regulations/new-regulation")}
         onClick={handleAddButton}
+        className="add-button-container"
       >
         {buttonTitle}
       </CButton>

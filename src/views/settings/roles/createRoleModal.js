@@ -14,18 +14,21 @@ import {
   import AddIcon from '@mui/icons-material/Add';
   import RemoveIcon from '@mui/icons-material/Remove';
   import TextArea from "src/components/textArea";
-  import { useCreateRoleMutation, useFetchPermissionsQuery } from 'src/api'
+  import { useCreateRoleMutation, useFetchPermissionsQuery, useFetchMenuQuery } from 'src/api'
 
   
   const CreateRoleModal = ({ close, visible }) => {
 
     const {data: availablePermissions} = useFetchPermissionsQuery()
+    const {data: availableMenu} = useFetchMenuQuery()
     const [createMutation, {isLoading, error, isError, isSuccess}] = useCreateRoleMutation()
     const [values, setValues] = useState({});
     const [allPermissions, setAllPermissions] = useState()
     const [selectedPermissions, setSelectedPermissions]= useState([])
     const [errors, setError] = useState({})
     const [errorText, setErrorText] = useState({})
+    const [menus, setMenus] = useState([])
+    const [selectedMenus, setSelectedMenus] = useState([])
 
     useEffect(() => {
       if(isSuccess){
@@ -48,7 +51,12 @@ import {
       }
     },[availablePermissions])
 
-  
+    useEffect(() => {
+      if(availableMenu){
+        setMenus(availableMenu.menu)
+      }
+    },[availableMenu])
+
 
     const handleAddPermission = (item) => {
       const allPerm = allPermissions.filter(el => el.id !== item.id)
@@ -80,6 +88,36 @@ import {
     })
 
 
+    const handleAddMenu = (item) => {
+      const allMenu = menus.filter(el => el.id !== item.id)
+      setMenus(allMenu)
+      setSelectedMenus([...selectedMenus, item])
+    }
+
+    const handleRemoveMenu = (item) => {
+      setSelectedMenus(() => selectedMenus.filter(el => el.id !== item.id))
+      setMenus([...menus, item])
+    }
+
+    const displayAllMenus = menus?.length > 0 && menus.map((el, id) => {
+      return(
+        <div key={id} className="select-item-container" onClick={() => handleAddMenu (el)}>
+          <span>{el.label}</span>
+          <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
+        </div>
+      )
+    })
+
+    
+    const displaySelectedMenus = selectedMenus.map((el, id) => {
+      return(
+        <div className="select-item-container-active" key={id} onClick={() => handleRemoveMenu(el)}>
+          <span>{el.label}</span>
+          <RemoveIcon style={{color: 'white', fontWeight: 'bold'}}/>
+        </div>
+      )
+    })
+
     const handleSubmit = (event) => {
       event.preventDefault()
       if(!values.name){
@@ -98,10 +136,14 @@ import {
       const selectedPermIds = selectedPermissions.map(el => {
         return {permission_id: el.id}
       })
+      const selectedMenuIds = selectedMenus.map( el => {
+        return {menu_id: el.id}
+      })
       const payload = [{
         name: values.name,
-        // description: values.description,
-        permissions: selectedPermIds
+        description: values.description,
+        permissions: selectedPermIds,
+        menu:selectedMenuIds
       }]
 
       createMutation({roles: payload})
@@ -169,30 +211,10 @@ import {
               </div>
               <div className="create-role-permision-container">
                 <div className="first-row item-container"> 
-                    {/* <div className="select-item-container">
-                        <span>create staff</span>
-                        <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
-                   </div>
-                   <div className="select-item-container">
-                        <span>create staff</span>
-                        <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
-                   </div>
-                   <div className="select-item-container">
-                        <span>create staff</span>
-                        <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
-                   </div> */}
-                   {displayAllPermissions}
+                   {displayAllMenus}
                 </div>
                 <div className="second-row item-container"> 
-                <div className="select-item-container-active">
-                        <span>create staff</span>
-                        <RemoveIcon style={{color: 'white', fontWeight: 'bold'}}/>
-                   </div>
-                   <div className="select-item-container-active">
-                        <span>create staff</span>
-                        <RemoveIcon style={{color: 'white', fontWeight: 'bold'}}/>
-                   </div>
-                   
+                  {displaySelectedMenus}
                 </div>
               </div>
           </CModalBody>

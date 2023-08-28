@@ -26,6 +26,9 @@ const settingsEndPoints = (builder) =>
 
   fetchRoles: builder.query({
     query: () => `${baseUrl}/`
+  }),
+  fetchMenu: builder.query({
+    query: () => `${baseUrl}/menu?p=0&r=50`
   })
 
 })
