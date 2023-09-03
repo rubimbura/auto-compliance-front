@@ -71,3 +71,35 @@
       color: #212529;
     }
 }
+
+.diplay-menu-item-container{
+    padding: 10px 30px;
+    border: 1px solid #E6E8EF;
+    border-radius: 20px;
+    background-color: #E6E8EF;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 0.3s ease;
+    gap: 20px;
+    min-width: 40%;
+    span{
+        font-weight: bold;
+    }
+}
+
+.diplay-menu-item-container-active{
+    padding: 10px 30px;
+    border: 1px solid #0061CC;
+    border-radius: 20px;
+    background-color: #0061CC;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 40%;
+    cursor: pointer;
+    span{
+        font-weight: bold;
+        color: white;
+    }
+}

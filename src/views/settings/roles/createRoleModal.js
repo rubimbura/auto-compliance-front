@@ -15,7 +15,9 @@ import {
   import RemoveIcon from '@mui/icons-material/Remove';
   import TextArea from "src/components/textArea";
   import { useCreateRoleMutation, useFetchPermissionsQuery, useFetchMenuQuery } from 'src/api'
-
+  import { CheckBox } from "@mui/icons-material";
+  import FormControlLabel from '@mui/material/FormControlLabel';
+  import Checkbox from '@mui/material/Checkbox';
   
   const CreateRoleModal = ({ close, visible }) => {
 
@@ -29,7 +31,10 @@ import {
     const [errorText, setErrorText] = useState({})
     const [menus, setMenus] = useState([])
     const [selectedMenus, setSelectedMenus] = useState([])
+    const [menuItems, setMenuItems] = useState([])
 
+
+  
     useEffect(() => {
       if(isSuccess){
         close()
@@ -53,7 +58,16 @@ import {
 
     useEffect(() => {
       if(availableMenu){
-        setMenus(availableMenu.menu)
+        
+        const updatedMenu = availableMenu.menu.map(item => ({
+          ...item,
+          children: item.children.map(child => ({
+            ...child,
+            isChecked: false,
+          })),
+        }))
+
+        setMenuItems(updatedMenu)
       }
     },[availableMenu])
 
@@ -67,6 +81,49 @@ import {
     const handleRemovePermission = (item) => {
       setSelectedPermissions(() => selectedPermissions.filter(el =>  el.id !== item.id))
       setAllPermissions([...allPermissions, item])
+    }
+
+    const handleCheckboxChange = (parentId, childId) => {
+      const updatedMenuItems = [...menuItems]
+      const parentItem = updatedMenuItems[parentId]
+      const childItem = parentItem.children[childId]
+      childItem.isChecked = !childItem.isChecked
+      setMenuItems(updatedMenuItems)
+
+      const allChildrenChecked = parentItem.children.every(child => child.isChecked)
+      if(allChildrenChecked){
+        const updatedItem = menuItems.filter((el, id) => id !== parentId )
+        setMenuItems(updatedItem)
+      }
+      const existingParentIndex = selectedMenus.findIndex(item => item.id === parentItem.id)
+      if (existingParentIndex !== -1) {
+        const updatedSelectedMenus = [...selectedMenus];
+        const existingParent = updatedSelectedMenus[existingParentIndex];
+        existingParent.children = parentItem.children.filter(child => child.isChecked);
+        updatedSelectedMenus[existingParentIndex] = existingParent;
+        setSelectedMenus(updatedSelectedMenus)
+    } else {
+        const selectedChildren = parentItem.children.filter(child => child.isChecked)
+        const updatedParentItem = {
+          ...parentItem,
+          children:selectedChildren
+        }
+        setSelectedMenus([...selectedMenus, updatedParentItem])
+      }
+    }
+
+    const handleRemoveCheckBox = (parentId, childId) => {
+      const updatedItem = [...selectedMenus]
+      const parentItem = updatedItem[parentId]
+      const childItem = parentItem.children[childId]
+      childItem.isChecked = !childItem.isChecked
+      setSelectedMenus(updatedItem)
+      const allChildUnchecked = parentItem.children.every( child => !child.isChecked)
+      if(allChildUnchecked){
+        const updatedItem = selectedMenus.filter((el,id) => id !== parentId)
+        setSelectedMenus(updatedItem)
+        setMenuItems([...menuItems, parentItem])
+      }
     }
 
     const displayAllPermissions = allPermissions?.length > 0 && allPermissions.map((el, id) => {
@@ -89,21 +146,33 @@ import {
 
 
     const handleAddMenu = (item) => {
-      const allMenu = menus.filter(el => el.id !== item.id)
-      setMenus(allMenu)
+      const allMenu = menuItems.filter(el => el.id !== item.id)
+      setMenuItems(allMenu)
       setSelectedMenus([...selectedMenus, item])
     }
 
     const handleRemoveMenu = (item) => {
       setSelectedMenus(() => selectedMenus.filter(el => el.id !== item.id))
-      setMenus([...menus, item])
+      setMenuItems([...menuItems, item])
     }
 
-    const displayAllMenus = menus?.length > 0 && menus.map((el, id) => {
+    const displayAllMenus = menuItems?.length > 0 && menuItems.map((el, id) => {
       return(
-        <div key={id} className="select-item-container" onClick={() => handleAddMenu (el)}>
+        <div key={id} className="diplay-menu-item-container">
+          <div onClick={() => handleAddMenu(el)}>
           <span>{el.label}</span>
-          <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
+            <AddIcon style={{color: 'black', fontWeight: 'bold'}}/>
+          </div>
+          {el.children?.length > 0 && el.children.map((val, idx) => {
+            return(
+              <FormControlLabel 
+                control={<Checkbox 
+                checked={val.isChecked} 
+                onChange={() => handleCheckboxChange(id, idx)}/>} 
+                label={val.label} 
+              />
+            )
+          })}
         </div>
       )
     })
@@ -111,9 +180,23 @@ import {
     
     const displaySelectedMenus = selectedMenus.map((el, id) => {
       return(
-        <div className="select-item-container-active" key={id} onClick={() => handleRemoveMenu(el)}>
-          <span>{el.label}</span>
-          <RemoveIcon style={{color: 'white', fontWeight: 'bold'}}/>
+        <div className="diplay-menu-item-container-active" key={id}>
+          <div onClick={() => handleRemoveMenu(el)}>
+            <span>{el.label}</span>
+            <RemoveIcon style={{color: 'white', fontWeight: 'bold'}}/>
+          </div>
+          {el.children?.length > 0 && el.children.map((val, idx) => {
+            return(
+              <FormControlLabel 
+                control={<Checkbox 
+                style={{color: 'white'}} 
+                checked={val.isChecked} 
+                onChange={() => handleRemoveCheckBox(id, idx)}/>} 
+                label={val.label}
+                
+              />
+            )
+          })}
         </div>
       )
     })
@@ -133,19 +216,18 @@ import {
       }
       setErrorText({})
       setError({})
-      const selectedPermIds = selectedPermissions.map(el => {
-        return {permission_id: el.id}
-      })
-      const selectedMenuIds = selectedMenus.map( el => {
-        return {menu_id: el.id}
-      })
+      const selectedPermIds = selectedPermissions.map(el => ({permission_id: el.id}))
+      const updateMenu = selectedMenus.map( el=> ({
+        ...el,
+        children: el.children?.filter(val => val.isChecked) || []
+      }))
+
       const payload = [{
         name: values.name,
         description: values.description,
         permissions: selectedPermIds,
-        menu:selectedMenuIds
+        menu:updateMenu
       }]
-
       createMutation({roles: payload})
     }
   
@@ -206,7 +288,7 @@ import {
               </div>
               <div className="assign-permission-container">
                 <CInputGroup>
-                    <CFormText className="assign-text">Assign menu</CFormText>
+                    <CFormText className="assign-text">Available menu</CFormText>
                 </CInputGroup>
               </div>
               <div className="create-role-permision-container">

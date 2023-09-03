@@ -18,7 +18,7 @@ const settingsEndPoints = (builder) =>
   }),
   createRole: builder.mutation({
     query: (body) => ({
-      url: `${baseUrl}/create/permission`,
+      url: `${baseUrl}/create/role`,
       method: 'post',
       body
     })
@@ -28,7 +28,7 @@ const settingsEndPoints = (builder) =>
     query: () => `${baseUrl}/`
   }),
   fetchMenu: builder.query({
-    query: () => `${baseUrl}/menu?p=0&r=50`
+    query: () => `${baseUrl}/menu/list`
   })
 
 })
