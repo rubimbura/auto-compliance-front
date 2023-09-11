@@ -16,6 +16,7 @@ const DataTable = ({
   handleSortDown,
   hasDeleteBtn,
   handleDeleteItem,
+  handleUpdateItem
 }) => {
   let displayHeaders = [];
   if (headers?.length > 0) {

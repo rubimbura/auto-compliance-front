@@ -28,6 +28,10 @@ const Regulation = () => {
     navigate('/regulations/new-regulation')
  }
 
+ const handleUpdateItem = () => {
+  
+ }
+
   return (
     <CCol xs={12}>
       <PageHeaderContainer buttonTitle="Add a new Regulation" handleAddButton={handleAddButton}/>
@@ -38,6 +42,7 @@ const Regulation = () => {
             data={data?.data[0]?.regulations}
             handleViewItem={handleViewItem}
             isLoading={isLoading}
+            handleUpdateItem={handleUpdateItem}
           />
         </CCardBody>
       </CCard>

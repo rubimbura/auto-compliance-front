@@ -76,13 +76,16 @@ const Login = () => {
     if (otpSuccess) {
       setOtpModal(false);
       navigate("/dashboard");
-      sessionStorage.setItem("token", otpData.data[0]?.token);
+      sessionStorage.setItem("token", otpData?.token);
+      sessionStorage.setItem("userMenu", JSON.stringify(otpData?.menu));
     }
   }, [otpSuccess]);
 
   const handleSubmitOtp = (event) => {
     event.preventDefault();
-    verifyOtpMutation({ otpId: loginData?.data[0]?.otpId, otp: OTP });
+    if(loginData){
+      verifyOtpMutation({ otpId: loginData?.otpId, otp: OTP });
+    }
   };
 
   return (
@@ -95,7 +98,7 @@ const Login = () => {
           <CCol md={5}>
             {isError && (
               <NotificationMessage
-                message={error.data?.data[0]?.uiMessage}
+                message={error.data?.message}
                 type="danger"
               />
             )}
@@ -183,7 +186,6 @@ const Login = () => {
         <OtpModal
           show={otpModal}
           onHide={() => setOtpModal(false)}
-          // otpId={loginData?.data[0]?.otpId}
           handleSubmit={handleSubmitOtp}
           isError={otpIsError}
           isLoading={otpLoader}
