@@ -1,19 +1,19 @@
 export const RegulationsHeaders = [
   {
     label: 'REGULATION REFERENCE',
-    value: 'regulation_ref',
+    value: 'reference',
   },
   {
     label: 'ISSUING DATE',
-    value: 'created_date',
+    value: 'createdTime',
   },
   {
     label: 'EFFECTIVE DATE',
-    value: 'effective_date',
+    value: 'effectiveDate',
   },
   {
     label: 'ISSUING AUTHORITY',
-    value: 'issuing_authority',
+    value: 'issuingAuthority',
   },
   {
     label: 'TYPE',

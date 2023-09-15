@@ -11,7 +11,6 @@ import PageHeaderContainer from 'src/components/pageHeader'
 
 
 
-
 const Regulation = () => {
  const navigate = useNavigate()
 
@@ -28,18 +27,18 @@ const Regulation = () => {
     navigate('/regulations/new-regulation')
  }
 
- const handleUpdateItem = () => {
-  
+ const handleUpdateItem = (data) => {
+    navigate('/regulations/new-regulation', {state: {details:data}})
  }
 
   return (
     <CCol xs={12}>
-      <PageHeaderContainer buttonTitle="Add a new Regulation" handleAddButton={handleAddButton}/>
+      <PageHeaderContainer hasDasborad buttonTitle="Add a new Regulation" handleAddButton={handleAddButton}/>
       <CCard className="mb-4">
         <CCardBody>
           <DataTable
             headers={RegulationsHeaders}
-            data={data?.data[0]?.regulations}
+            data={data?.data[0]?.governances}
             handleViewItem={handleViewItem}
             isLoading={isLoading}
             handleUpdateItem={handleUpdateItem}

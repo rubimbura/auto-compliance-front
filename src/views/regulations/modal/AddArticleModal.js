@@ -15,15 +15,7 @@ import "./SearchBar.scss";
 import NotificationMessage from "src/components/NotificationMessage";
 
 const AddArticleModal = ({ close, visible, regulation_id }) => {
-  const [values, setValues] = useState({
-    article_no: "",
-    action_required: "",
-    assessment_frequency: "",
-    action_frequency: "",
-    impact: "",
-    regulation_id: regulation_id,
-    article_description: "",
-  })
+  const [values, setValues] = useState({})
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -42,17 +34,22 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
 
   const handleAddArticle = () => {
     const newIds = searchResults.map(el => {
-      return {user_id: el.id}
+      return {userId: el.id}
     })
     let payload = {
       ...values,
-      assigned_to: newIds
+      assignedTo: newIds,
+      governanceId:regulation_id,
+      status: 'active',
+      likelyhood:'2',
+      inherentRisk: '',
+      impactRate:''
     }
     var articles = [];
     articles.push(payload);
 
     let sample = {
-      articles: articles,
+      obligations: articles,
     };
     addArticleMutation(sample)
   }
@@ -75,7 +72,7 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
     if(isError){
       setMessage({
         type: 'danger',
-        message: error?.data?.data[0]?.uiMessage,
+        message: error?.data?.error,
         show: true
       })
     }
@@ -104,63 +101,84 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
       <CModal
         backdrop={true}
         visible={visible}
-        size="lg"
+        size="xl"
         onClose={() => close()}
       >
         <div className="modal-header-container">
-          <CModalTitle style={{ color: "white" }}>Add an article</CModalTitle>
+          <CModalTitle style={{ color: "white" }}>Add an obligation</CModalTitle>
           <img src={close_icon} onClick={close} style={{ cursor: "pointer" }} />
         </div>
-        <CModalBody>
+        <CModalBody style={{padding: '24px 48px'}}>
           {message.show && <NotificationMessage type={message.type} message={message.message}/>}
           <TextField
-            label="Article Number"
-            value={values.article_no}
+            label="Title"
+            value={values.title}
             onChange={(event) => {
               setValues({
                 ...values,
-                article_no: event.target.value,
+                title: event.target.value,
               });
             }}
           />
           <TextField
-            label="Article descrption"
-            value={values.article_description}
+            label="Obligation Number"
+            value={values.articleNo}
             onChange={(event) => {
               setValues({
                 ...values,
-                article_description: event.target.value,
+                articleNo: event.target.value,
+              });
+            }}
+            type='number'
+          />
+          <TextField
+            label="Obligation descrption"
+            value={values.description}
+            onChange={(event) => {
+              setValues({
+                ...values,
+                description: event.target.value,
               });
             }}
           />
           <TextField
+            label="Risk descrption"
+            value={values.riskDescription}
+            onChange={(event) => {
+              setValues({
+                ...values,
+                riskDescription: event.target.value,
+              });
+            }}
+          />
+          {/* <TextField
             label="Action Required"
-            value={values.action_required}
+            value={values.actionRequired}
             onChange={(event) => {
               setValues({
                 ...values,
-                action_required: event.target.value,
+                actionRequired: event.target.value,
               });
             }}
-          />
+          /> */}
 
-          <SelectField
+          {/* <SelectField
             label="Self assessment frequency"
             options={assessmentFrequency}
             onChange={(event) => {
               setValues({
                 ...values,
-                assessment_frequency: event.target.value,
+                assessmentFrequency: event.target.value,
               });
             }}
-          />
+          /> */}
           <SelectField
             label="Action frequency"
             options={assessmentFrequency}
             onChange={(event) => {
               setValues({
                 ...values,
-                action_frequency: event.target.value,
+                frequencyId: event.target.value,
               });
             }}
           />
@@ -171,6 +189,17 @@ const AddArticleModal = ({ close, visible, regulation_id }) => {
               setValues({
                 ...values,
                 impact: event.target.value,
+              });
+            }}
+          />
+
+          <TextField
+            label="Primary owner"
+            value={values.description}
+            onChange={(event) => {
+              setValues({
+                ...values,
+                primaryOwner: 'baf077ec-42cd-4a14-b444-89ad93d1f5d6',
               });
             }}
           />
@@ -260,9 +289,9 @@ export default AddArticleModal;
 const assessmentFrequency = [
   "",
   { label: "Daily", value: 1 },
-  { label: "Weekly", value: 1 },
-  { label: "Monthly", value: 1 },
-  { label: "Quartely", value: 1 },
-  { label: "Anual", value: 1 },
+  { label: "Weekly", value: 2 },
+  { label: "Monthly", value: 3 },
+  { label: "Quartely", value: 4 },
+  { label: "Anual", value: 5 },
   // { label: "Other show date field", value: 1 },
 ];

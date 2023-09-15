@@ -44,16 +44,16 @@ const DataTable = ({
     displayBody = data.map((row, id) => {
       let newObj = Object.assign({}, row);
       newObj.actions = (
-        <div style={{display: 'flex', gap: 10}}>
+        <div style={{display: 'flex', gap: 10, justifyContent: 'flex-end'}}>
           <div onClick={() => handleViewItem(row)}>
             <RemoveRedEyeIcon style={{width: 16, height: 16, cursor: 'pointer'}}/>
           </div>
           <div onClick={() => handleUpdateItem(row)}>
             <EditIcon style={{width: 16, height: 16, cursor: 'pointer'}}/>
           </div>
-          {true && <div onClick={() => handleDeleteItem(row)}>
+          {/* {true && <div onClick={() => handleDeleteItem(row)}>
             <DeleteIcon style={{width: 16, height: 16, cursor: 'pointer', color: '#ff9494'}}/>
-          </div>}
+          </div>} */}
         </div>
       );
       return (

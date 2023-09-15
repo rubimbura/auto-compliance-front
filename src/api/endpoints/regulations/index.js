@@ -5,34 +5,36 @@ const baseUrl = '/univ'
 const regulationEndPoints = (builder) => 
 ({
   fetchRegulations: builder.query({
-      query: () => `${baseUrl}/regulations?p=1&r=50` 
+      query: () => `${baseUrl}/governances?p=0&r=50` 
   }),
   addRegulation: builder.mutation({
     query: (body) => ({
-      url: `${baseUrl}/create/regulation`,
+      url: `${baseUrl}/create/governance`,
       method: 'post',
       body
     })
   }),
   updateRegulation: builder.mutation({
     query: (body) => ({
-      url: `${baseUrl}/amend/regulation`,
+      url: `${baseUrl}/amend/governance`,
       method: 'put',
       body
     })
   }),
   fetchRegulationArticles: builder.query({
-    query: (id) => `${baseUrl}/articles?p=0&r=50&sv=${id}`
+    query: (id) => `${baseUrl}/obligations?p=0&r=50&sv=${id}`,
+    providesTags:['regulationArticle']
   }),
   addRegulationArticle: builder.mutation({
     query:(body) => ({
-      url: `${baseUrl}/create/article`,
+      url: `${baseUrl}/obligation`,
       method: 'post',
       body
-    })
+    }),
+    invalidatesTags: ['regulationArticle']
   }), 
   fetchUsersByArticleId: builder.query({
-    query: (id) => `${baseUrl}/users/articles/${id}?p=0&r=50`,
+    query: (id) => `${baseUrl}/users/obligation/${id}?p=0&r=50`,
     providesTags: 'assignedUsers'
   }),
 
@@ -40,7 +42,7 @@ const regulationEndPoints = (builder) =>
     query: (searchQuery) => `${baseUrl}/users?p=0&r=50&sv=${searchQuery}`
   }),
   fetchUsersPerArticle: builder.query({
-    query:(id) => `${baseUrl}/users/articles/${id}?p=0&r=50`,
+    query:(id) => `${baseUrl}/users/obligation/${id}?p=0&r=50`,
     providesTags: ['usersPerArticle']
   }),
   createUserPerArticle: builder.mutation({

@@ -1,5 +1,8 @@
 @import './styles/layouts/_fonts.scss';
 
+*{
+  font-family: $sofia-regular;
+}
 
 .login-container{
     background-image:linear-gradient(to top, rgba(245, 246, 252, 0.52), rgba(0,50,100)), url(../assets/images/bnr-bg-1.jpeg);
@@ -221,13 +224,13 @@ color: #D04750;
   font-family: $sofia-regular;
   letter-spacing: 0.6px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .table-body-text{
   color: #2A2F4E !important;
   font-family: $sofia-regular;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400px;
   line-height: 16px;
 }

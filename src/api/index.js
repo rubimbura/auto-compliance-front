@@ -41,7 +41,8 @@ const appApi = createApi({
     'auth',
     'usersPerArticle',
     'users',
-    'permissions'
+    'permissions',
+    'regulationArticle'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),

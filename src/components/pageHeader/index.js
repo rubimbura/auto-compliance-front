@@ -4,7 +4,7 @@ import "./index.scss";
 const PageHeaderContainer = ({hasDasborad, handleAddButton, buttonTitle}) => {
   return (
     <div className="page-header-container">
-      {true && <div className="statistics-container">
+      {hasDasborad && <div className="statistics-container">
         <div className="card-container total">
           <span className="title">Total Regulations:</span>
           <span className="value">30</span>

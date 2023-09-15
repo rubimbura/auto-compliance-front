@@ -9,12 +9,15 @@ import TextField from "src/components/textfield";
 import SelectField from "src/components/selectField";
 import TextArea from "src/components/textArea"; 
 import { useState, useEffect } from 'react'
-import { useAddRegulationMutation } from 'src/api'
+import { useAddRegulationMutation, useUpdateRegulationMutation } from 'src/api'
 import NotificationMessage from "src/components/NotificationMessage"
-
+import { useLocation } from "react-router-dom";
 
 
 const AddRegulationForm = () => {
+  const location = useLocation();
+
+  const state = location.state;
 
   const [selectedType, setSelectedType] = useState('')
   const [selectedAuthority, setSelectedAuthority] = useState('')
@@ -24,53 +27,30 @@ const AddRegulationForm = () => {
   })
 
   const [addRegulationMutation, {data, isLoading, isSuccess, isError, error}] = useAddRegulationMutation()
+  const [updateMutation, { data: updateDta, isLoading:updateLoader, isSuccess:updateSuccess, isError:updateIserror, error:updateError }] = useUpdateRegulationMutation();
 
   const [values, setValues] = useState({
-    regulation_ref: "",
-    effective_date: "",
-    issuing_authority: "",
-    issuing_date: "",
-    repeal_date: "",
-    general_impact: "",
-    regulatory_digest: "",
-    status: "",
+    status: 'Active'
   })
 
-  const options = [
-    "",
-    { label: "Directive", value: "some" },
-    { label: "Regulation", value: "2" },
-    { label: "Law", value: "3" },
-    { label: "Guidline", value: "3" },
-    { label: "Other", value: "other" },
-  ];
-
-  const issuedAuthorityArr = [
-    "",
-    {label: 'BNR', value: 'bnr'},
-    {label: 'Ministerial Order', value:'minesterial order'},
-    {label: 'Rwanda Revenue Authority', value: 'rra'},
-    {label: 'Other', value:'other'}
-  ]
-
-
-  const status = [
-    "Active",
-    { label: "Repealed", value: "repealed" },
-  ]
+  useEffect(() => {
+    if(state){
+      setValues(state.details);
+    }
+  }, [state]);
 
 
   useEffect(()=> {
-    if(isError){
+    if(isError || updateIserror){
       setMessage({
         type: 'danger',
-        message: ''
+        message: updateError?.data?.data[0]?.uiMessage
       })
     }
-    if(isSuccess){
+    if(isSuccess || updateSuccess){
       setMessage({
         type: 'success',
-        message: data?.data[0]?.uiMessage
+        message: data?.data[0]?.uiMessage || updateDta?.data[0]?.uiMessage
       })
     }
     const interval = setInterval(() => {
@@ -80,13 +60,18 @@ const AddRegulationForm = () => {
       })
     }, 10000)
     return () => clearInterval(interval)
-  },[isSuccess, isError])
-
+  },[isSuccess, isError, updateSuccess, updateIserror])
 
   const handleSubmit = () => {
+    if(state){
+      var regulationsArr = [];
+      regulationsArr.push(values);
+      updateMutation({ governances: regulationsArr });
+      return
+    }
     var regulationsArr = []
     regulationsArr.push(values)
-    addRegulationMutation({regulations:regulationsArr})
+    addRegulationMutation({governances:regulationsArr})
   }
 
   return (
@@ -98,12 +83,17 @@ const AddRegulationForm = () => {
             <span>Add Regulation </span>
           </div>
           <div  className="add-form-row">
-            <TextField label="Regulation Title" onChange={(text) =>{
-              setValues({
-                ...values,
-                regulation_ref: text.target.value
-              })
-            }}/>
+            <TextField 
+                label="Regulation Title" 
+                onChange={(text) =>{
+                setValues({
+                  ...values,
+                  reference: text.target.value,
+                  title:text.target.value
+                })
+              }}
+              value={values.reference}
+            />
             <SelectField 
               label="Status" 
               style={{marginLeft: 10}} 
@@ -111,9 +101,10 @@ const AddRegulationForm = () => {
               onChange={(text) => {
                 setValues({
                   ...values,
-                  status: text.target.value
+                  status: text.value
                 })
               }}
+              value={values.status}
               />
           </div>
           <div className="add-form-row">
@@ -124,9 +115,10 @@ const AddRegulationForm = () => {
                 setSelectedType(text.target.value)
                 setValues({
                   ...values,
-                  type: text.target.value
+                  typeId: text.target.value
                 })
               }}
+              value={values.typeId}
               />
             <SelectField label="Issuing Authority" 
               style={{marginLeft: 10}} options={issuedAuthorityArr} 
@@ -134,9 +126,10 @@ const AddRegulationForm = () => {
                 setSelectedAuthority(text.target.value)
                 setValues({
                   ...values,
-                  issuing_authority: text.target.value
+                  issuingAuthority: text.target.value
                 })
               }}
+              value={values.issuingAuthority}
               />
           </div>
 
@@ -158,7 +151,7 @@ const AddRegulationForm = () => {
               onChange={(text) => {
                 setValues({
                   ...values,
-                  issuing_authority: text.target.value
+                  issuingAuthority: text.target.value
                 })
               }}
               />}
@@ -171,9 +164,10 @@ const AddRegulationForm = () => {
               onChange={(text) => {
                 setValues({
                   ...values,
-                  issuing_date: text.target.value
+                  issuingDate: text.target.value
                 })
               }}
+              value={values.issuingDate}
               />
             <TextField 
               className="ml-2 form-field" 
@@ -182,45 +176,26 @@ const AddRegulationForm = () => {
               onChange={(text) => {
                 setValues({
                   ...values,
-                  effective_date: text.target.value
+                  effectiveDate: text.target.value
                 })
               }}
+              value={values.effectiveDate}
               />
           </div>
+
           <div className="add-form-row">
-            <TextField 
-              className="form-field" 
-              label="Repeal Date" 
-              type="date"
-              onChange={(text) => {
-                setValues({
-                  ...values,
-                  repeal_date: text.target.value
-                })
-              }}
-              />
-            <TextField className="form-field" label="Repeal Date" type="date" style={{visibility: 'hidden'}}/>
-          </div>
-          <div className="add-form-row">
-            <TextArea 
-              label="General Impact"
-              onChange={(text) => {
-                setValues({
-                  ...values,
-                  general_impact: text.target.value
-                })
-              }}
-              />
+            
             <TextArea 
               className="ml-2" 
-              label="Regulatory Digest"
+              label="Regulatory Digest/ Description"
               onChange={(text) => {
                 setValues({
                   ...values,
-                  regulatory_digest: text.target.value
+                  description: text.target.value
                 })
               }}
-              />
+              value={values.description}
+            />
           </div>
   
           <CInputGroup className="mb-3">
@@ -239,9 +214,9 @@ const AddRegulationForm = () => {
                 padding: "10px 40px",
               }}
               onClick={handleSubmit}
-              disabled={isLoading}
+              disabled={isLoading || updateLoader} 
             >
-              Submit
+              {state ? 'Update' : 'Submit'}
             </CButton>
           </div>
         </CCardBody>
@@ -251,3 +226,28 @@ const AddRegulationForm = () => {
 };
 
 export default AddRegulationForm;
+
+
+
+const options = [
+  "",
+  { label: "Directive", value: "1" },
+  { label: "Regulation", value: "2" },
+  { label: "Law", value: "3" },
+  { label: "Guidline", value: "4" },
+  { label: "Other", value: "other" },
+];
+
+const issuedAuthorityArr = [
+  "",
+  {label: 'BNR', value: 'bnr'},
+  {label: 'Ministerial Order', value:'minesterial order'},
+  {label: 'Rwanda Revenue Authority', value: 'rra'},
+  {label: 'Other', value:'other'}
+]
+
+
+const status = [
+  { label: "Active", value: "active" },
+  { label: "Repealed", value: "repealed" },
+]
