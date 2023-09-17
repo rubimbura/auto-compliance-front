@@ -1,30 +1,30 @@
 export const RegulationsHeaders = [
   {
-    label: 'REGULATION REFERENCE',
+    label: 'Regulation Reference',
     value: 'reference',
   },
   {
-    label: 'ISSUING DATE',
+    label: 'Issuing Date',
     value: 'createdTime',
   },
   {
-    label: 'EFFECTIVE DATE',
+    label: 'Effective Date',
     value: 'effectiveDate',
   },
   {
-    label: 'ISSUING AUTHORITY',
+    label: 'Issuing Authority',
     value: 'issuingAuthority',
   },
   {
-    label: 'TYPE',
+    label: 'Type',
     value: 'type',
   },
   {
-    label: 'STATUS',
+    label: 'Status',
     value: 'status',
   },
   {
-    label: 'ACTIONS',
+    label: 'Actions',
     value: 'actions',
   },
 ]
@@ -99,4 +99,31 @@ export const permissionsHeaders = [
     label: 'AVAILABLE PERMISSIONS',
     value: 'name'
   }
+]
+
+
+export const governanceBodiesHeaders = [
+  {
+    label: 'Name',
+    value: 'name'
+  },
+  {
+    label: 'Actions',
+    value: 'actions',
+  },
+]
+
+export const subsidiariesHeaders = [
+  {
+    label: 'Name',
+    value: 'name'
+  },
+  {
+    label: 'Country',
+    value: 'country'
+  },
+  // {
+  //   label: 'Actions',
+  //   value: 'actions',
+  // },
 ]

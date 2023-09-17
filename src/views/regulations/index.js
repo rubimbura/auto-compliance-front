@@ -42,6 +42,8 @@ const Regulation = () => {
             handleViewItem={handleViewItem}
             isLoading={isLoading}
             handleUpdateItem={handleUpdateItem}
+            hasViewBtn={true}
+            hasEditBtn={true}
           />
         </CCardBody>
       </CCard>

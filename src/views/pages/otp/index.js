@@ -48,7 +48,7 @@ const OtpModal = ({
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={() =>{onHide(); setCountDownTimer(300)}}
       dialogClassName="otp-modal"
       className="general-otp-modal"
       aria-labelledby="contained-modal-title-vcenter"

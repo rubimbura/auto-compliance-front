@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_coreui_coreui_free_react_admin_template=self.webpackChunk_coreui_coreui_free_react_admin_template||[]).push([[915],{61915:function(e,r,c){c.r(r);c(72791);var a=c(78983),t=c(80184);r.default=function(){return(0,t.jsx)(t.Fragment,{children:(0,t.jsx)(a.xH,{className:"mb-4",children:(0,t.jsx)(a.sl,{})})})}}}]);
-//# sourceMappingURL=915.21527369.chunk.js.map

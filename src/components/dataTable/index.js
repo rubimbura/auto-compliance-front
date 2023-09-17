@@ -16,7 +16,9 @@ const DataTable = ({
   handleSortDown,
   hasDeleteBtn,
   handleDeleteItem,
-  handleUpdateItem
+  handleUpdateItem,
+  hasViewBtn,
+  hasEditBtn
 }) => {
   let displayHeaders = [];
   if (headers?.length > 0) {
@@ -24,7 +26,7 @@ const DataTable = ({
       return (
         <th className="table-headers-text">
           <div className="d-flex">
-            <div>{el.label || "-"}</div>
+            <div style={{marginLeft: el.value === 'actions' ? 'auto' : ''}}>{el.label || "-"}</div>
             <div className="table-sort-container ml-2">
               {el.isSort && (
                 <>
@@ -45,15 +47,15 @@ const DataTable = ({
       let newObj = Object.assign({}, row);
       newObj.actions = (
         <div style={{display: 'flex', gap: 10, justifyContent: 'flex-end'}}>
-          <div onClick={() => handleViewItem(row)}>
+          {hasViewBtn && <div onClick={() => handleViewItem(row)}>
             <RemoveRedEyeIcon style={{width: 16, height: 16, cursor: 'pointer'}}/>
-          </div>
-          <div onClick={() => handleUpdateItem(row)}>
+          </div>}
+          {hasEditBtn && <div onClick={() => handleUpdateItem(row)}>
             <EditIcon style={{width: 16, height: 16, cursor: 'pointer'}}/>
-          </div>
-          {/* {true && <div onClick={() => handleDeleteItem(row)}>
+          </div>}
+          {hasDeleteBtn && <div onClick={() => handleDeleteItem(row)}>
             <DeleteIcon style={{width: 16, height: 16, cursor: 'pointer', color: '#ff9494'}}/>
-          </div>} */}
+          </div>}
         </div>
       );
       return (

@@ -2,15 +2,12 @@ import React from 'react'
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Line } from "react-chartjs-2";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
 import {
   CCard,
   CCardBody,
 } from '@coreui/react'
 
-
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 const Dashboard = () => {
@@ -39,29 +36,27 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-  
-      <CCard className="mb-4">
-        <CCardBody>
-          <div style={{width: '100%', display: 'flex', gap: 30}}>
-            <div style={{width: '30%'}}>
-            <Doughnut data={data}/>
+    <CCard className="mb-4">
+      <CCardBody>
+        <div style={{width: '100%', display: 'flex', gap: 30}}>
+          <div style={{width: '30%'}}>
+          <Doughnut data={data}/>
 
-            </div>
-            <div style={{width: '30%'}}>
-            <Doughnut data={datas}/>
-
-            </div>
           </div>
-          <br/>
-          <br/>
+          <div style={{width: '30%'}}>
+          <Doughnut data={datas}/>
 
-          <div style={{width: '50%'}}>
-            <Line data={datas}  />
-            </div>
-        </CCardBody>
-      </CCard>
-    </>
+          </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div style={{width: '50%'}}>
+          <Line data={datas}  />
+        </div>
+
+      </CCardBody>
+    </CCard>
   )
 }
 

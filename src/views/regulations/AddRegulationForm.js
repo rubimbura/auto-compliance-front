@@ -9,7 +9,7 @@ import TextField from "src/components/textfield";
 import SelectField from "src/components/selectField";
 import TextArea from "src/components/textArea"; 
 import { useState, useEffect } from 'react'
-import { useAddRegulationMutation, useUpdateRegulationMutation } from 'src/api'
+import { useAddRegulationMutation, useUpdateRegulationMutation, useFetchGovernanceBodyQuery } from 'src/api'
 import NotificationMessage from "src/components/NotificationMessage"
 import { useLocation } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const AddRegulationForm = () => {
 
   const [addRegulationMutation, {data, isLoading, isSuccess, isError, error}] = useAddRegulationMutation()
   const [updateMutation, { data: updateDta, isLoading:updateLoader, isSuccess:updateSuccess, isError:updateIserror, error:updateError }] = useUpdateRegulationMutation();
-
+  const {data: regulators} = useFetchGovernanceBodyQuery()
   const [values, setValues] = useState({
     status: 'Active'
   })
@@ -73,6 +73,13 @@ const AddRegulationForm = () => {
     regulationsArr.push(values)
     addRegulationMutation({governances:regulationsArr})
   }
+
+  
+  const issuedAuthorityArr = regulators?.data && regulators?.data[0]?.governanceBodies.map( el => ({
+    label: el.name,
+    value: el.id
+  }))
+
 
   return (
     <CCol xs={12}>
@@ -237,14 +244,6 @@ const options = [
   { label: "Guidline", value: "4" },
   { label: "Other", value: "other" },
 ];
-
-const issuedAuthorityArr = [
-  "",
-  {label: 'BNR', value: 'bnr'},
-  {label: 'Ministerial Order', value:'minesterial order'},
-  {label: 'Rwanda Revenue Authority', value: 'rra'},
-  {label: 'Other', value:'other'}
-]
 
 
 const status = [

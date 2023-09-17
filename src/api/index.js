@@ -6,7 +6,8 @@ import regulationEndPoints from './endpoints/regulations'
 import usersEndpoints from './endpoints/users'
 import userRegulationEndPoints from './endpoints/userRegulations'
 import settingsEndPoints from './endpoints/settings'
-
+import governaceBodyEndpoints from './endpoints/governanceBodies'
+import subsidiariesEndpoints from './endpoints/subsidiaries'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_D_CORE_URL,
@@ -42,14 +43,17 @@ const appApi = createApi({
     'usersPerArticle',
     'users',
     'permissions',
-    'regulationArticle'
+    'regulationArticle',
+    'subsidiary'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),
     ...regulationEndPoints(builder),
     ...usersEndpoints(builder),
     ...userRegulationEndPoints(builder),
-    ...settingsEndPoints(builder)
+    ...settingsEndPoints(builder),
+    ...governaceBodyEndpoints(builder),
+    ...subsidiariesEndpoints(builder)
   }),
 })
 
@@ -90,6 +94,17 @@ useCreatePermissionMutation,
 useCreateRoleMutation,
 useFetchPermissionsQuery,
 useFetchMenuQuery,
+
+
+//governance body
+useFetchGovernanceBodyQuery,
+useAddGovernanceBodyMutation,
+useUpdateGovernanceBodyMutation,
+
+
+//subsidiary 
+useFetchsubsidiariesQuery,
+useAddSubsidiaryMutation
 
 
 } = appApi

@@ -14,6 +14,14 @@ const PermissionSettings = React.lazy(() => import('../views/settings/permisions
 const UserRegulation = React.lazy(() => import('../views/regulations/user/UserRegulation'))
 const AssesUserRegulation = React.lazy(() => import('../views/regulations/user/UserAssessRegulation'))
 
+
+// governance bodies 
+const GovernanceBodies = React.lazy(() => import('../views/governanceBody'))
+
+// Subsidiaries
+
+const Subsidiaries = React.lazy(() => import('../views/subsidiaries'))
+
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/regulations', name: 'Regulations', element: Regulations},
@@ -24,7 +32,9 @@ const routes = [
   { path: '/user/regulations/assesment', name: 'Regulation', element: AssesUserRegulation},
   { path: '/users', name: 'Users', element: Users},
   { path: '/Roles', name: 'Roles', element: RolesSettings},
-  { path: '/Permissions', name: 'Permissions', element: PermissionSettings}
+  { path: '/Permissions', name: 'Permissions', element: PermissionSettings},
+  { path: '/evaluation', name: 'evaluation', element: Subsidiaries},
+
 
 
 ]

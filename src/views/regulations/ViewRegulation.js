@@ -20,8 +20,8 @@ const ViewRegulationForm = () => {
   };
 
   var displayArticles = []
-  if(articleData?.data[0]?.articles){
-    displayArticles = articleData?.data[0]?.articles.map(article=>{
+  if(articleData?.data[0]?.obligations){
+    displayArticles = articleData?.data[0]?.obligations.map(article=>{
       return(
         <Accordion article={article} details={details}/>
       )
@@ -86,7 +86,7 @@ const ViewRegulationForm = () => {
               </Row>
           <div className="add-articles-container">
             <div className="articles-container">
-              <span> Articles </span>
+              <span> Obligations </span>
             </div>
             <CButton
               style={{
@@ -102,7 +102,7 @@ const ViewRegulationForm = () => {
               Add Obligation
             </CButton>
           </div>
-          <div>
+          <div style={{padding: '10px 0px 30px'}}>
             {displayArticles}
           </div>
         </CCardBody>

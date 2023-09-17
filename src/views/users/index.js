@@ -39,6 +39,8 @@ const [userDetails, setUserDetails] = useState('')
             handleViewItem={handleViewItem}
             isLoading={isLoading}
             handleDeleteItem={handleDeleteItem}
+            hasViewBtn={true}
+            hasDeleteBtn={true}
           />
         </CCardBody>
         </CCard>
