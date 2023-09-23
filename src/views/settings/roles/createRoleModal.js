@@ -29,7 +29,7 @@ import {
     const {data: availablePermissions} = useFetchPermissionsQuery()
     const {data: availableMenu} = useFetchMenuQuery()
     const [createMutation, {isLoading, error, isError, isSuccess}] = useCreateRoleMutation()
-    const [updateMutation, {data: updateData}] = useUpdateRolesMutation()
+    const [updateMutation, {data: updateData, isSuccess: updateIsSuccess, isLoading: updateLoader}] = useUpdateRolesMutation()
     const {data: permissionsByIdData} = useFetchPermisionsByRoleIdQuery(details?.id, {skip: details ? false : true})
     const [values, setValues] = useState({});
     const [allPermissions, setAllPermissions] = useState([])
@@ -53,12 +53,13 @@ import {
           isChecked: false,
         })),
       }));
-    setSelectedMenus(updateMenu)
     
-    // Use the defined menuItems variable here
-    setMenuItems(currentMenuItems =>
-      currentMenuItems.filter(menu => !updateMenu.some(menus => menus.id === menu.id))
-    )
+    if(updateMenu){
+      setSelectedMenus(updateMenu)
+      setMenuItems(currentMenuItems =>
+        currentMenuItems.filter(menu => !updateMenu.some(menus => menus.id === menu.id))
+      )
+    } 
   }
 }, [details])
 
@@ -98,7 +99,7 @@ import {
     }, [availablePermissions])
   
     useEffect(() => {
-      if(isSuccess){
+      if(isSuccess || updateIsSuccess){
         close()
         setValues({})
         setErrorText({})
@@ -110,7 +111,7 @@ import {
           response:error.data?.message
         })
       }}
-    },[isSuccess, isError])
+    },[isSuccess, isError, updateIsSuccess])
 
 
     const handleAddPermission = (item) => {
@@ -370,7 +371,7 @@ import {
                 padding: "10px 40px",
               }}
               onClick={handleSubmit}
-              disabled={isLoading}
+              disabled={isLoading || updateLoader}
             >
               Submit
             </CButton>

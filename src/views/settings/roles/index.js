@@ -48,7 +48,7 @@ const [details, setDetails] = useState()
         </CCard>
         <CreateRoleModal 
           visible={createRoleModal} 
-          close={()=> setRoleModal(false)}
+          close={()=> {setRoleModal(false); setDetails('')}}
           details={details}
         />
     </CCol>
