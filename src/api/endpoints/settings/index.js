@@ -16,20 +16,32 @@ const settingsEndPoints = (builder) =>
     }),
     invalidatesTags:['permissions']
   }),
+  fetchMenu: builder.query({
+    query: () => `${baseUrl}/menu/list`
+  }),
+  fetchRoles : builder.query({
+    query: () => `${baseUrl}/roles?p=0&r=50`,
+    providesTags: ['roles']
+  }),
+  updateRoles: builder.mutation({
+    query: (body) => ({
+      url: `${baseUrl}/amend/role`,
+      method: 'PUT',
+      body
+    }),
+    invalidatesTags: ['roles']
+  }),
+  fetchPermisionsByRoleId: builder.query({
+    query: (id) => `${baseUrl}/permissions/${id}?p=0&r=50`
+  }),
   createRole: builder.mutation({
     query: (body) => ({
       url: `${baseUrl}/create/role`,
       method: 'post',
       body
-    })
+    }),
+    invalidatesTags: ['roles']
   }), 
-
-  fetchRoles: builder.query({
-    query: () => `${baseUrl}/`
-  }),
-  fetchMenu: builder.query({
-    query: () => `${baseUrl}/menu/list`
-  })
 
 })
 

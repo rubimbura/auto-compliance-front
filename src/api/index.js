@@ -44,7 +44,8 @@ const appApi = createApi({
     'users',
     'permissions',
     'regulationArticle',
-    'subsidiary'
+    'subsidiary',
+    'roles'
   ],
   endpoints: (builder) => ({
     ...authEndPoints(builder),
@@ -94,7 +95,9 @@ useCreatePermissionMutation,
 useCreateRoleMutation,
 useFetchPermissionsQuery,
 useFetchMenuQuery,
-
+useFetchRolesQuery,
+useUpdateRolesMutation,
+useFetchPermisionsByRoleIdQuery,
 
 //governance body
 useFetchGovernanceBodyQuery,

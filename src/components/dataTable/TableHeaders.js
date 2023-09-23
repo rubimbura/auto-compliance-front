@@ -127,3 +127,15 @@ export const subsidiariesHeaders = [
   //   value: 'actions',
   // },
 ]
+
+
+export const RolesHeaders = [
+  {
+    label: 'Name',
+    value: 'name'
+  },
+  {
+    label: 'Actions',
+    value: 'actions',
+  },
+]

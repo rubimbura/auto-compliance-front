@@ -14,47 +14,53 @@ import {
   import AddIcon from '@mui/icons-material/Add';
   import RemoveIcon from '@mui/icons-material/Remove';
   import TextArea from "src/components/textArea";
-  import { useCreateRoleMutation, useFetchPermissionsQuery, useFetchMenuQuery } from 'src/api'
-  import { CheckBox } from "@mui/icons-material";
+  import { 
+    useCreateRoleMutation, 
+    useFetchPermissionsQuery, 
+    useFetchMenuQuery,
+    useFetchPermisionsByRoleIdQuery,
+    useUpdateRolesMutation
+  } from 'src/api'
   import FormControlLabel from '@mui/material/FormControlLabel';
   import Checkbox from '@mui/material/Checkbox';
   
-  const CreateRoleModal = ({ close, visible }) => {
+  const CreateRoleModal = ({ close, visible, details }) => {
 
     const {data: availablePermissions} = useFetchPermissionsQuery()
     const {data: availableMenu} = useFetchMenuQuery()
     const [createMutation, {isLoading, error, isError, isSuccess}] = useCreateRoleMutation()
+    const [updateMutation, {data: updateData}] = useUpdateRolesMutation()
+    const {data: permissionsByIdData} = useFetchPermisionsByRoleIdQuery(details?.id, {skip: details ? false : true})
     const [values, setValues] = useState({});
-    const [allPermissions, setAllPermissions] = useState()
+    const [allPermissions, setAllPermissions] = useState([])
     const [selectedPermissions, setSelectedPermissions]= useState([])
     const [errors, setError] = useState({})
     const [errorText, setErrorText] = useState({})
-    const [menus, setMenus] = useState([])
     const [selectedMenus, setSelectedMenus] = useState([])
     const [menuItems, setMenuItems] = useState([])
+    let userPermissionArr = [];
 
-
-  
-    useEffect(() => {
-      if(isSuccess){
-        close()
-        setValues({})
-        setErrorText({})
-        setError({})
-      }
-      if(isError){{
-        setErrorText({
-          ...errorText,
-          response:error.data?.data[0]?.uiMessage
-        })
-      }}
-    },[isSuccess, isError])
 
     useEffect(() => {
-      if(availablePermissions){
-        setAllPermissions(availablePermissions?.data[0]?.permissions)
-      }
-    },[availablePermissions])
+  if (details) {
+    setValues(details);
+    const updateMenu =
+      details?.menu?.length > 0 &&
+      details.menu.map(item => ({
+        ...item,
+        children: item.children.map(child => ({
+          ...child,
+          isChecked: false,
+        })),
+      }));
+    setSelectedMenus(updateMenu)
+    
+    // Use the defined menuItems variable here
+    setMenuItems(currentMenuItems =>
+      currentMenuItems.filter(menu => !updateMenu.some(menus => menus.id === menu.id))
+    )
+  }
+}, [details])
 
     useEffect(() => {
       if(availableMenu){
@@ -70,6 +76,41 @@ import {
         setMenuItems(updatedMenu)
       }
     },[availableMenu])
+
+    useEffect(() => {
+      if(permissionsByIdData) {
+        let userPermissionArr = permissionsByIdData.data?.[0]?.permissions ?? []
+        setSelectedPermissions(userPermissionArr)
+        setAllPermissions(allPermissions => allPermissions.filter(permission => !userPermissionArr.some(userPermission => userPermission.id === permission.id)))
+      }
+    },[permissionsByIdData])
+
+    useEffect(() => {
+      if (availablePermissions) {
+        const availablePermissionsArray = availablePermissions?.data[0]?.permissions ?? [];
+        setAllPermissions(allPermissions => [
+          ...allPermissions,
+          ...availablePermissionsArray.filter(permission => 
+            !allPermissions.some(existingPermission => existingPermission.id === permission.id)
+          )
+        ])
+      }
+    }, [availablePermissions])
+  
+    useEffect(() => {
+      if(isSuccess){
+        close()
+        setValues({})
+        setErrorText({})
+        setError({})
+      }
+      if(isError){{
+        setErrorText({
+          ...errorText,
+          response:error.data?.message
+        })
+      }}
+    },[isSuccess, isError])
 
 
     const handleAddPermission = (item) => {
@@ -222,13 +263,24 @@ import {
         children: el.children?.filter(val => val.isChecked) || []
       }))
 
-      const payload = [{
-        name: values.name,
-        description: values.description,
-        permissions: selectedPermIds,
-        menu:updateMenu
-      }]
+      if(details){
+        const payload = [{
+          id: details.id,
+          name: values.name,
+          description: values.description,
+          permissions: selectedPermIds,
+          menu:updateMenu
+        }]
+        updateMutation({roles: payload})
+      }else{
+        const payload = [{
+          name: values.name,
+          description: values.description,
+          permissions: selectedPermIds,
+          menu:updateMenu
+        }]
       createMutation({roles: payload})
+      }
     }
   
     return (

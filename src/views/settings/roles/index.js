@@ -1,13 +1,16 @@
 import { CCard, CCardBody, CCol } from "@coreui/react"
 import PageHeaderContainer from 'src/components/pageHeader'
 import DataTable from 'src/components/dataTable'
-import { usersHeaders } from 'src/components/dataTable/TableHeaders'
+import { RolesHeaders } from 'src/components/dataTable/TableHeaders'
 import CreateRoleModal from "./createRoleModal"
 import { useState } from 'react'
+import { useFetchRolesQuery } from 'src/api'
 
 const Roles = () => {
 
 const [createRoleModal, setRoleModal] = useState(false)
+const { data, isLoading } = useFetchRolesQuery()
+const [details, setDetails] = useState()
 
  const handleModal = () => {
   setRoleModal(prev => !prev)
@@ -21,21 +24,33 @@ const [createRoleModal, setRoleModal] = useState(false)
     
   }
 
+  const handleUpdateItem = (details) => {
+    setRoleModal(prev => !prev)
+    setDetails(details)
+  }
+
  return(
     <CCol sx={12}>
       <PageHeaderContainer buttonTitle="Add a role" handleAddButton={handleModal}/>
         <CCard className="mb-4">
         <CCardBody>
           <DataTable
-            headers={usersHeaders}
-            // data={{}}
+            headers={RolesHeaders}
+            data={data?.roles}
             handleViewItem={handleViewItem}
-            // isLoading={isLoading}
+            isLoading={isLoading}
             handleDeleteItem={handleDeleteItem}
+            hasViewBtn
+            hasEditBtn
+            handleUpdateItem={handleUpdateItem}
           />
         </CCardBody>
         </CCard>
-        <CreateRoleModal visible={createRoleModal} close={()=> setRoleModal(false)}/>
+        <CreateRoleModal 
+          visible={createRoleModal} 
+          close={()=> setRoleModal(false)}
+          details={details}
+        />
     </CCol>
  )
 }
