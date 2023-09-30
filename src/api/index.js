@@ -8,6 +8,8 @@ import userRegulationEndPoints from './endpoints/userRegulations'
 import settingsEndPoints from './endpoints/settings'
 import governaceBodyEndpoints from './endpoints/governanceBodies'
 import subsidiariesEndpoints from './endpoints/subsidiaries'
+import evaluationEndPoints from './endpoints/evaluation'
+
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_D_CORE_URL,
@@ -54,7 +56,8 @@ const appApi = createApi({
     ...userRegulationEndPoints(builder),
     ...settingsEndPoints(builder),
     ...governaceBodyEndpoints(builder),
-    ...subsidiariesEndpoints(builder)
+    ...subsidiariesEndpoints(builder),
+    ...evaluationEndPoints(builder)
   }),
 })
 
@@ -107,7 +110,11 @@ useUpdateGovernanceBodyMutation,
 
 //subsidiary 
 useFetchsubsidiariesQuery,
-useAddSubsidiaryMutation
+useAddSubsidiaryMutation,
+
+
+//evaluation
+useFetchEvaluationsQuery,
 
 
 } = appApi

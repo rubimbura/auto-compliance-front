@@ -61,6 +61,9 @@ import {
       )
     } 
   }
+  if(visible){
+    setError({})
+  }
 }, [details])
 
     useEffect(() => {
@@ -272,7 +275,8 @@ import {
           permissions: selectedPermIds,
           menu:updateMenu
         }]
-        updateMutation({roles: payload})
+        console.log('what we have', payload)
+        // updateMutation({roles: payload})
       }else{
         const payload = [{
           name: values.name,
@@ -280,7 +284,7 @@ import {
           permissions: selectedPermIds,
           menu:updateMenu
         }]
-      createMutation({roles: payload})
+      // createMutation({roles: payload})
       }
     }
   
