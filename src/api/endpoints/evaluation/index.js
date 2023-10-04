@@ -1,11 +1,11 @@
 
-const baseUrl = '/univ'
+const baseUrl = '/evaluation'
 
 
 const evaluationEndPoints = (builder) => 
 ({
   fetchEvaluations: builder.query({
-    query: `${baseUrl}`
+    query: () => `${baseUrl}/filter?page=0&size=10`
   })
 })
 
