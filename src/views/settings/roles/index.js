@@ -24,7 +24,7 @@ const [details, setDetails] = useState()
     
   }
 
-  const handleUpdateItem = (details) => {
+  const handleUpdateItem = (details) => {z
     setRoleModal(prev => !prev)
     setDetails(details)
   }
