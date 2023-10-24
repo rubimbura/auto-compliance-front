@@ -1,5 +1,5 @@
 
-const baseUrl = '/univ/governancebody'
+const baseUrl = '/administration/univ/governancebody'
 
 
 const governaceBodyEndpoints = (builder) => 

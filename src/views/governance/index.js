@@ -33,7 +33,7 @@ const Regulation = () => {
 
   return (
     <CCol xs={12}>
-      <PageHeaderContainer hasDasborad buttonTitle="Add a new Regulation" handleAddButton={handleAddButton}/>
+      <PageHeaderContainer hasDasborad buttonTitle="Add a governance" handleAddButton={handleAddButton}/>
       <CCard className="mb-4">
         <CCardBody>
           <DataTable

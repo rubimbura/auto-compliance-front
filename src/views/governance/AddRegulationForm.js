@@ -30,7 +30,8 @@ const AddRegulationForm = () => {
   const [updateMutation, { data: updateDta, isLoading:updateLoader, isSuccess:updateSuccess, isError:updateIserror, error:updateError }] = useUpdateRegulationMutation();
   const {data: regulators} = useFetchGovernanceBodyQuery()
   const [values, setValues] = useState({
-    status: 'Active'
+    status: 'Active',
+    issuingAuthority: 1
   })
 
   useEffect(() => {
@@ -80,6 +81,8 @@ const AddRegulationForm = () => {
     value: el.id
   }))
 
+
+  console.log('the values we have', values)
 
   return (
     <CCol xs={12}>

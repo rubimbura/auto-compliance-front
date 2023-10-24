@@ -2,18 +2,18 @@ import React from 'react'
 
 
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
-const Regulations = React.lazy(()=>import('../views/regulations'))
-const AddRegulationForm = React.lazy(()=>import('../views/regulations/AddRegulationForm'))
-const ViewRegulationForm = React.lazy(() => import('../views/regulations/ViewRegulation'))
-const ViewRegulationArticle = React.lazy(() => import('../views/regulations/ViewRegulationArticle'))
+const Governance = React.lazy(()=>import('../views/governance'))
+const AddRegulationForm = React.lazy(()=>import('../views/governance/AddRegulationForm'))
+const ViewRegulationForm = React.lazy(() => import('../views/governance/ViewRegulation'))
+const ViewRegulationArticle = React.lazy(() => import('../views/governance/ViewRegulationArticle'))
 const Users = React.lazy(() => import('../views/users'))
 const RolesSettings = React.lazy(() => import('../views/settings/roles'))
 const PermissionSettings = React.lazy(() => import('../views/settings/permisions'))
 const Evaluation = React.lazy(() => import('../views/evaluation'))
 
 // user regulations
-const UserRegulation = React.lazy(() => import('../views/regulations/user/UserRegulation'))
-const AssesUserRegulation = React.lazy(() => import('../views/regulations/user/UserAssessRegulation'))
+const UserRegulation = React.lazy(() => import('../views/governance/user/UserRegulation'))
+const AssesUserRegulation = React.lazy(() => import('../views/governance/user/UserAssessRegulation'))
 
 
 // governance bodies 
@@ -24,7 +24,7 @@ const Subsidiaries = React.lazy(() => import('../views/subsidiaries'))
 
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/regulations', name: 'Regulations', element: Regulations},
+  { path: '/governances', name: 'Governances', element: Governance},
   { path: '/regulations/new-regulation', name: 'Add new regulation form', element: AddRegulationForm},
   { path: '/regulations/view-regulation', name: 'Regulation Form', element: ViewRegulationForm},
   { path: '/regulations/view-regulation/article', name: 'Article', element: ViewRegulationArticle},

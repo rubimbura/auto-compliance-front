@@ -1,5 +1,5 @@
 
-const baseUrl = '/univ'
+const baseUrl = '/administration/univ'
 
 
 const regulationEndPoints = (builder) => 

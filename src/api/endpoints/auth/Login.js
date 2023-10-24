@@ -1,5 +1,5 @@
 
-const baseUrl = '/univ'
+const baseUrl = '/administration/univ'
 
 
 const authEndPoints = (builder) => 
@@ -12,7 +12,7 @@ const authEndPoints = (builder) =>
     })
   }),
   requestNonce: builder.query({
-      query: () => `/univ/nonce` 
+      query: () => `${baseUrl}/nonce` 
   }),
   verifyOtp:builder.mutation({
     query: (body) => ({
