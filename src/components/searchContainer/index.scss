@@ -1,0 +1,22 @@
+.search-item-container{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  input{
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  button{
+    border: none;
+    outline: none;
+    padding: 10px 40px;
+    border-radius: 8px;
+    color: #034EA2 !important;
+  }
+}
+
+.search-btn-loader{
+  background-color: #ccc;
+}

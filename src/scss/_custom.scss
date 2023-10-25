@@ -254,3 +254,14 @@ color: #D04750;
     font-family: $sofia-regular !important;
 }
 
+
+.filters-page-container{
+    gap: 30px;
+}
+
+.search-filters-page-container{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}

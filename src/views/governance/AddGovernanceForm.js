@@ -9,7 +9,12 @@ import TextField from "src/components/textfield";
 import SelectField from "src/components/selectField";
 import TextArea from "src/components/textArea"; 
 import { useState, useEffect } from 'react'
-import { useAddRegulationMutation, useUpdateRegulationMutation, useFetchGovernanceBodyQuery } from 'src/api'
+import { 
+  useAddRegulationMutation, 
+  useUpdateRegulationMutation, 
+  useFetchGovernanceBodyQuery,
+  useFetchTypesQuery 
+} from 'src/api'
 import NotificationMessage from "src/components/NotificationMessage"
 import { useLocation } from "react-router-dom";
 
@@ -33,6 +38,8 @@ const AddRegulationForm = () => {
     status: 'Active',
     issuingAuthority: 1
   })
+
+ const {data: types} = useFetchTypesQuery()
 
   useEffect(() => {
     if(state){
@@ -81,8 +88,14 @@ const AddRegulationForm = () => {
     value: el.id
   }))
 
-
-  console.log('the values we have', values)
+  const formatTypes = types?.content?.map((el) => {
+    return(
+      {
+        label: el.name,
+        id:el.id
+      }
+    )
+  })
 
   return (
     <CCol xs={12}>
@@ -90,7 +103,7 @@ const AddRegulationForm = () => {
       <CCard className="mb-4">
         <CCardBody style={{ padding: 20 }}>
           <div className="module-title-container">
-            <span>Add Regulation </span>
+            <span>Add Governance </span>
           </div>
           <div  className="add-form-row">
             <TextField 
@@ -120,7 +133,7 @@ const AddRegulationForm = () => {
           <div className="add-form-row">
             <SelectField 
               label="Select Type" 
-              options={options} 
+              options={formatTypes} 
               onChange={(text) => {
                 setSelectedType(text.target.value)
                 setValues({
@@ -239,14 +252,14 @@ export default AddRegulationForm;
 
 
 
-const options = [
-  "",
-  { label: "Directive", value: "1" },
-  { label: "Regulation", value: "2" },
-  { label: "Law", value: "3" },
-  { label: "Guidline", value: "4" },
-  { label: "Other", value: "other" },
-];
+// const options = [
+//   "",
+//   { label: "Directive", value: "1" },
+//   { label: "Regulation", value: "2" },
+//   { label: "Law", value: "3" },
+//   { label: "Guidline", value: "4" },
+//   { label: "Other", value: "other" },
+// ]
 
 
 const status = [

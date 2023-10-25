@@ -3,7 +3,7 @@ import React from 'react'
 
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const Governance = React.lazy(()=>import('../views/governance'))
-const AddRegulationForm = React.lazy(()=>import('../views/governance/AddRegulationForm'))
+const AddGovernanceBodyForm = React.lazy(()=>import('../views/governance/AddGovernanceForm'))
 const ViewRegulationForm = React.lazy(() => import('../views/governance/ViewRegulation'))
 const ViewRegulationArticle = React.lazy(() => import('../views/governance/ViewRegulationArticle'))
 const Users = React.lazy(() => import('../views/users'))
@@ -25,7 +25,7 @@ const Subsidiaries = React.lazy(() => import('../views/subsidiaries'))
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/governances', name: 'Governances', element: Governance},
-  { path: '/regulations/new-regulation', name: 'Add new regulation form', element: AddRegulationForm},
+  { path: '/governances/new-governance-body', name: 'Add new regulation form', element: AddGovernanceBodyForm},
   { path: '/regulations/view-regulation', name: 'Regulation Form', element: ViewRegulationForm},
   { path: '/regulations/view-regulation/article', name: 'Article', element: ViewRegulationArticle},
   { path: '/user/regulations', name: 'Regulation', element: UserRegulation},

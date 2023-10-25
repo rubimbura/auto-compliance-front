@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 
 import authEndPoints from './endpoints/auth/Login'
-import regulationEndPoints from './endpoints/regulations'
+import regulationEndPoints from './endpoints/governances'
 import usersEndpoints from './endpoints/users'
 import userRegulationEndPoints from './endpoints/userRegulations'
 import settingsEndPoints from './endpoints/settings'
@@ -72,7 +72,7 @@ useVerifyOtpMutation,
 
 
 //regulations
-useFetchRegulationsQuery,
+useLazyFetchGovernancesQuery,
 useAddRegulationMutation,
 useUpdateRegulationMutation,
 useFetchRegulationArticlesQuery,
@@ -82,6 +82,7 @@ useSearchUsersMutation,
 useFetchUsersPerArticleQuery,
 useCreateUserPerArticleMutation,
 useDeleteUserPerArticleMutation,
+useFetchTypesQuery,
 
 
 //user regulations

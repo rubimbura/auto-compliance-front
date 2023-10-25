@@ -4,9 +4,6 @@ import React, {  useRef } from 'react'
 
 
 
-
-
-
 const FilterComponent = ({setDate, date, handleFilter}) => {
 
   const refStart = useRef(null);

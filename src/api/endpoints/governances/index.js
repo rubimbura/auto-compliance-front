@@ -1,11 +1,12 @@
 
 const baseUrl = '/administration/univ'
+const filterPath = '/config/type/filter'
 
 
 const regulationEndPoints = (builder) => 
 ({
-  fetchRegulations: builder.query({
-      query: () => `${baseUrl}/governances?p=0&r=50` 
+  fetchGovernances: builder.query({
+    query: (params) => `${baseUrl}/governances?${params}` 
   }),
   addRegulation: builder.mutation({
     query: (body) => ({
@@ -13,6 +14,9 @@ const regulationEndPoints = (builder) =>
       method: 'post',
       body
     })
+  }),
+  fetchTypes: builder.query({
+    query: () => `${filterPath}?page=0&size=24&scope=GovernanceBody`
   }),
   updateRegulation: builder.mutation({
     query: (body) => ({

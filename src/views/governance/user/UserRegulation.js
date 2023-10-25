@@ -1,6 +1,6 @@
 import { CCard, CCardBody,  CCol } from '@coreui/react'
 import DataTable from 'src/components/dataTable'
-import { useFetchRegulationsQuery } from 'src/api'
+import { useLazyFetchGovernancesQuery } from 'src/api'
 import { useDispatch } from 'react-redux'
 import { regulation } from 'src/slices/Regulation'
 import { RegulationsHeaders } from 'src/components/dataTable/TableHeaders'
@@ -13,7 +13,11 @@ const UserRegulation = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const {data, isLoading} = useFetchRegulationsQuery('regulations')
+  const  [fetchGovernances, {data, isLoading}] = useLazyFetchGovernancesQuery('regulations')
+
+  useEffect(() => {
+    fetchGovernances()
+   },[])
 
   const handleViewItem = (data) => {
     navigate('/user/regulations/assesment', {state: {details: data}})
